@@ -1,0 +1,40 @@
+direction01.md
+  s_dca19710d237aa::t_c482c150c3119a 919-934
+  s_dca19710d237aa::t_eccb1e6303f508 585-605
+  s_dca19710d237aa::t_491f81847f1632 13-22
+  s_dca19710d237aa::t_a3bef5ce5e1594 218-233
+  s_dca19710d237aa::t_664c94e71ccdaf 939
+  s_dca19710d237aa::t_a246f84a952375 71
+  s_dca19710d237aa::t_89f1083a575e54 622
+  s_dca19710d237aa::t_283172ebef64d8 781
+  s_dca19710d237aa::t_3d623a8c4b966e 965-968
+  s_dca19710d237aa::t_1cea568ba89aa3 161
+  s_dca19710d237aa::t_7b0ec61718d8d9 1037
+  s_dca19710d237aa::t_fc2bfc8f271cd7 709-720
+  s_dca19710d237aa::t_be57a8f48c8eab 741
+  s_dca19710d237aa::t_07024a29bbfa2f 727
+  s_dca19710d237aa::t_2fbf6487a1a902 897-904
+  s_dca19710d237aa::t_13457b1f0749be 303-304
+  s_dca19710d237aa::t_6f70748f96624d 1160-1168
+  s_dca19710d237aa::t_3b98434dad180f 812
+  s_dca19710d237aa::t_d7f5333c722445 702-703
+  s_dca19710d237aa::t_fbdf65c75979bc 969-970
+  s_dca19710d237aa::t_49256802253d90 1248
+  s_dca19710d237aa::t_45dece898f83b4 68-69
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "813edfc90e224453c787aebb24119ef0f12c39e1",
+  "prompts": {},
+  "sessions": {
+    "s_dca19710d237aa": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "d17cd4df-97a4-4ab6-b4c7-1a6b647e1c7a",
+        "model": "composer-2.5"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    }
+  }
+}
