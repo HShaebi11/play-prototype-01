@@ -1,0 +1,29 @@
+src/components/panel/VariablesTab.tsx
+  s_46979a2b663fdc::t_a610320269ee4e 13-17
+  s_46979a2b663fdc::t_d099d1306445f4 3
+src/components/panel/InputsTab.tsx
+  s_46979a2b663fdc::t_9c285c1412d76c 186-189
+  s_46979a2b663fdc::t_5b9dae8399cd16 3
+src/components/panel/LayersTab.tsx
+  s_46979a2b663fdc::t_72d3454baf7c44 3
+  s_46979a2b663fdc::t_da4fc25acd9510 63
+  s_46979a2b663fdc::t_36940e073f03e6 74
+  s_46979a2b663fdc::t_3b78b1f0bd5b8b 15-18
+  s_46979a2b663fdc::t_3bd1a4c6677699 43
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "c955f29a69d4f6f5ea068054483692850693a11f",
+  "prompts": {},
+  "sessions": {
+    "s_46979a2b663fdc": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "dab166dd-828f-4798-b7be-9680865e033f",
+        "model": "composer-2.5"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    }
+  }
+}
