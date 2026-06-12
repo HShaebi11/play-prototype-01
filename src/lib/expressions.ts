@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { createClientStorage } from "@/lib/persist-storage";
 
 export type ExpressionResult = {
   value: number;
@@ -207,6 +208,7 @@ export const useExpressionStore = create<ExpressionStore>()(
     }),
     {
       name: "play-expressions",
+      storage: createClientStorage(),
     },
   ),
 );

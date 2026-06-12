@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useMemo } from "react";
 import { useLayerStore } from "@/hooks/useLayerStore";
 import type {
@@ -11,7 +12,11 @@ import type {
 import { BG_COLOR } from "@/lib/constants";
 import { MediaLayer } from "./MediaLayer";
 import { P5Layer } from "./P5Layer";
-import { ThreeLayer } from "./ThreeLayer";
+
+const ThreeLayer = dynamic(
+  () => import("./ThreeLayer").then((mod) => mod.ThreeLayer),
+  { ssr: false },
+);
 
 function sortLayers(layers: Layer[]): Layer[] {
   return [...layers].sort((a, b) => a.zIndex - b.zIndex);

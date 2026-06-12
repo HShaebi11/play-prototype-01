@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { createClientStorage } from "@/lib/persist-storage";
 
 export type InputSource =
   | { device: "gamepad"; type: "axis"; index: number }
@@ -161,6 +162,7 @@ export const useMappingStore = create<MappingStore>()(
     }),
     {
       name: "play-mappings",
+      storage: createClientStorage(),
     },
   ),
 );

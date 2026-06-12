@@ -1,7 +1,7 @@
 "use client";
 
-import { useMemo, useRef } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { useMemo, useRef, type Ref } from "react";
+import { Canvas, useFrame } from "@react-three/fiber/legacy";
 import * as THREE from "three";
 import { useVariableStoreApi } from "@/hooks/useVariableStore";
 import type {
@@ -14,6 +14,11 @@ import type {
 type ThreeLayerProps = {
   layerId: string;
   config: ThreeJSLayerConfig;
+};
+
+const DEFAULT_CAMERA = {
+  position: new THREE.Vector3(0, 0, 8),
+  fov: 50,
 };
 
 const BLOB_VERTEX_SHADER = `
@@ -213,13 +218,13 @@ function SceneLight({ light }: { light: ThreeLight }) {
 
   switch (light.type) {
     case "ambient":
-      return <ambientLight ref={ref} />;
+      return <ambientLight ref={ref as Ref<THREE.AmbientLight>} />;
     case "point":
-      return <pointLight ref={ref} />;
+      return <pointLight ref={ref as Ref<THREE.PointLight>} />;
     case "directional":
-      return <directionalLight ref={ref} />;
+      return <directionalLight ref={ref as Ref<THREE.DirectionalLight>} />;
     case "spot":
-      return <spotLight ref={ref} />;
+      return <spotLight ref={ref as Ref<THREE.SpotLight>} />;
   }
 }
 
@@ -497,8 +502,8 @@ export function ThreeLayer({ config }: ThreeLayerProps) {
     <Canvas
       className="h-full w-full"
       style={{ background: "transparent" }}
-      gl={{ alpha: true, antialias: true }}
-      camera={{ position: [0, 0, 8], fov: 50 }}
+      renderer={{ alpha: true, antialias: true }}
+      camera={DEFAULT_CAMERA}
     >
       <ThreeScene config={config} />
     </Canvas>

@@ -1,0 +1,37 @@
+diff --git a/dist/index.mjs b/dist/index.mjs
+index 0b7936695c40382e1d79dc825e0143f5815529d8..1377c592bf3e3aed4f9c97590d827ae8d36ccf2c 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -1,6 +1,6 @@
+ import * as webgpu from 'three/webgpu';
+-import { RenderTarget, CubeReflectionMapping, EquirectangularReflectionMapping, CubeTextureLoader, Scene, WebGLCubeRenderTarget, HalfFloatType, Color, Frustum, Matrix4, Group, BoxGeometry, MeshBasicNodeMaterial, Mesh, Node, NodeUpdateType, Layers, SRGBColorSpace, RGBAFormat, UnsignedByteType, Vector3, Vector2, TextureLoader, Texture as Texture$1, CanvasTarget, Raycaster, OrthographicCamera, PerspectiveCamera, PCFShadowMap, VSMShadowMap, BasicShadowMap, ACESFilmicToneMapping, WebGPURenderer } from 'three/webgpu';
+-import { WebGLRenderTarget, WebGLRenderer } from 'three';
++import { RenderTarget, CubeReflectionMapping, EquirectangularReflectionMapping, CubeTextureLoader, Scene, HalfFloatType, Color, Frustum, Matrix4, Group, BoxGeometry, MeshBasicNodeMaterial, Mesh, Node, NodeUpdateType, Layers, SRGBColorSpace, RGBAFormat, UnsignedByteType, Vector3, Vector2, TextureLoader, Texture as Texture$1, CanvasTarget, Raycaster, OrthographicCamera, PerspectiveCamera, PCFShadowMap, VSMShadowMap, BasicShadowMap, ACESFilmicToneMapping, WebGPURenderer } from 'three/webgpu';
++import { WebGLRenderTarget, WebGLCubeRenderTarget, WebGLRenderer } from 'three';
+ import { Inspector } from 'three/addons/inspector/Inspector.js';
+ import { jsx, Fragment, jsxs } from 'react/jsx-runtime';
+ import * as React from 'react';
+diff --git a/dist/legacy.mjs b/dist/legacy.mjs
+index b3a78e1d0ceba6002732fcfdf038bda6f10e67da..8be1f5adf7023446ed65352708ddbde5d539b47b 100644
+--- a/dist/legacy.mjs
++++ b/dist/legacy.mjs
+@@ -1,5 +1,6 @@
+ import * as three from 'three';
+-import { WebGLRenderTarget, CubeReflectionMapping, EquirectangularReflectionMapping, CubeTextureLoader, Scene, WebGLCubeRenderTarget, HalfFloatType, Color, Frustum, Matrix4, Group, BoxGeometry, MeshBasicNodeMaterial, Mesh, Node, NodeUpdateType, Layers, SRGBColorSpace, RGBAFormat, UnsignedByteType, Vector3, Vector2, TextureLoader, Texture as Texture$1, Raycaster, OrthographicCamera, PerspectiveCamera, PCFShadowMap, VSMShadowMap, BasicShadowMap, ACESFilmicToneMapping, WebGLRenderer } from 'three';
++import { WebGLRenderTarget, CubeReflectionMapping, EquirectangularReflectionMapping, CubeTextureLoader, Scene, WebGLCubeRenderTarget, HalfFloatType, Color, Frustum, Matrix4, Group, BoxGeometry, Mesh, Layers, SRGBColorSpace, RGBAFormat, UnsignedByteType, Vector3, Vector2, TextureLoader, Texture as Texture$1, Raycaster, OrthographicCamera, PerspectiveCamera, PCFShadowMap, VSMShadowMap, BasicShadowMap, ACESFilmicToneMapping, WebGLRenderer } from 'three';
++import { MeshBasicNodeMaterial, Node, NodeUpdateType } from 'three/webgpu';
+ import { jsx, Fragment, jsxs } from 'react/jsx-runtime';
+ import * as React from 'react';
+ import React__default, { useLayoutEffect, useRef, useMemo, useEffect, useContext, useImperativeHandle, useCallback, useState } from 'react';
+diff --git a/dist/webgpu/index.mjs b/dist/webgpu/index.mjs
+index 1bab0d5b99d2f171f33e3ee521e8a9eae618481b..9707b9bc0b37b9947f14c2a6012e99efb6626258 100644
+--- a/dist/webgpu/index.mjs
++++ b/dist/webgpu/index.mjs
+@@ -1,5 +1,6 @@
+ import * as webgpu from 'three/webgpu';
+-import { RenderTarget, CubeReflectionMapping, EquirectangularReflectionMapping, CubeTextureLoader, Scene, WebGLCubeRenderTarget, HalfFloatType, Color, Frustum, Matrix4, Group, BoxGeometry, MeshBasicNodeMaterial, Mesh, Node, NodeUpdateType, Layers, SRGBColorSpace, RGBAFormat, UnsignedByteType, Vector3, Vector2, TextureLoader, Texture as Texture$1, CanvasTarget, Raycaster, OrthographicCamera, PerspectiveCamera, PCFShadowMap, VSMShadowMap, BasicShadowMap, ACESFilmicToneMapping, WebGPURenderer, Vector4, PostProcessing } from 'three/webgpu';
++import { RenderTarget, CubeReflectionMapping, EquirectangularReflectionMapping, CubeTextureLoader, Scene, HalfFloatType, Color, Frustum, Matrix4, Group, BoxGeometry, MeshBasicNodeMaterial, Mesh, Node, NodeUpdateType, Layers, SRGBColorSpace, RGBAFormat, UnsignedByteType, Vector3, Vector2, TextureLoader, Texture as Texture$1, CanvasTarget, Raycaster, OrthographicCamera, PerspectiveCamera, PCFShadowMap, VSMShadowMap, BasicShadowMap, ACESFilmicToneMapping, WebGPURenderer, Vector4, PostProcessing } from 'three/webgpu';
++import { WebGLCubeRenderTarget } from 'three';
+ import { Inspector } from 'three/addons/inspector/Inspector.js';
+ import { jsx, Fragment, jsxs } from 'react/jsx-runtime';
+ import * as React from 'react';

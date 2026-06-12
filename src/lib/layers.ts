@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { createClientStorage } from "@/lib/persist-storage";
 
 export type LayerType = "threejs" | "p5" | "media";
 
@@ -438,6 +439,7 @@ export const useLayerStore = create<LayerStore>()(
     }),
     {
       name: "play-layers",
+      storage: createClientStorage(),
       partialize: (state) => ({
         layers: stripTransientFromLayers(state.layers),
       }),
