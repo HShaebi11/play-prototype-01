@@ -1,0 +1,46 @@
+src/lib/layers.ts
+  s_9137b98448667c::t_3bfa925b3fb119 3
+  s_9137b98448667c::t_7d94b443585d32 442
+src/components/canvas/ThreeLayer.tsx
+  s_9137b98448667c::t_9e2954b3a9a904 221,223,225,227
+  s_9137b98448667c::t_cb550f67d70ab8 506
+  s_9137b98448667c::t_f27087b3e7ae3c 3
+  s_9137b98448667c::t_c04b889afb2edc 505
+  s_9137b98448667c::t_095648cc70e06b 19-23
+  s_9137b98448667c::t_77337313ebd46d 4
+patches/@react-three__fiber@10.0.0-canary.1b98c17.patch
+  s_9137b98448667c::t_ecfb15c686c040 1-37
+src/lib/persist-storage.ts
+  s_9137b98448667c::t_2b8c2bfd7c4d11 1-13
+package.json
+  s_9137b98448667c::t_025dbb5bdfe097 12-13
+next.config.ts
+  s_9137b98448667c::t_3e7c0efbafbbe4 2-3,6,8
+  s_9137b98448667c::t_a4543021f4eaf3 7
+src/components/canvas/CanvasRenderer.tsx
+  s_9137b98448667c::t_cabe7ad48c68cc 3,15-19
+pnpm-workspace.yaml
+  s_9137b98448667c::t_ecfb15c686c040 4-5
+src/lib/mappings.ts
+  s_9137b98448667c::t_3863722680a738 165
+  s_9137b98448667c::t_1d74d5391a2646 3
+src/lib/expressions.ts
+  s_9137b98448667c::t_7f1f89c3fb105f 3
+  s_9137b98448667c::t_67953ef34ef4bf 211
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "afb9d5db6dcaafedc0abca60058b07bfa1a6215f",
+  "prompts": {},
+  "sessions": {
+    "s_9137b98448667c": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "52ac743a-16dc-4393-9cd1-07b5a9bb5804",
+        "model": "composer-2.5"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    }
+  }
+}
