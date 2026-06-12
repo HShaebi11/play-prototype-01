@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useAnimationFrame } from "@/hooks/useAnimationFrame";
 import { useVariableStore, useVariableStoreApi } from "@/hooks/useVariableStore";
 import {
@@ -10,7 +10,11 @@ import {
 import { ACCENT, BG_COLOR, PANEL_SELECTED_TINT } from "@/lib/constants";
 
 export function VariablesTab() {
-  const variables = useVariableStore((state) => state.getAll());
+  const variablesRecord = useVariableStore((state) => state.variables);
+  const variables = useMemo(
+    () => Object.values(variablesRecord),
+    [variablesRecord],
+  );
   const setExpression = useExpressionStore((state) => state.setExpression);
   const getExpression = useExpressionStore((state) => state.getExpression);
 

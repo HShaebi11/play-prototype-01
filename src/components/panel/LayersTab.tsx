@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import type { Layer, LayerType } from "@/lib/layers";
 import { useLayerStore } from "@/hooks/useLayerStore";
 import { LayerRow } from "@/components/panel/LayerRow";
@@ -12,8 +12,10 @@ const LAYER_TYPE_OPTIONS: Array<{ type: LayerType; label: string }> = [
 ];
 
 export function LayersTab() {
-  const layers = useLayerStore((state) =>
-    [...state.layers].sort((a, b) => b.zIndex - a.zIndex),
+  const layers = useLayerStore((state) => state.layers);
+  const sortedLayers = useMemo(
+    () => [...layers].sort((a, b) => b.zIndex - a.zIndex),
+    [layers],
   );
   const addLayer = useLayerStore((state) => state.addLayer);
   const reorderLayers = useLayerStore((state) => state.reorderLayers);
@@ -38,7 +40,7 @@ export function LayersTab() {
         return;
       }
 
-      const ids = layers.map((layer) => layer.id);
+      const ids = sortedLayers.map((layer) => layer.id);
       const fromIndex = ids.indexOf(draggingId);
       const toIndex = ids.indexOf(targetId);
 
@@ -58,7 +60,7 @@ export function LayersTab() {
       setDraggingId(null);
       setDragOverId(null);
     },
-    [draggingId, layers, reorderLayers],
+    [draggingId, sortedLayers, reorderLayers],
   );
 
   const handleDragEnd = useCallback(() => {
@@ -69,7 +71,7 @@ export function LayersTab() {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-col gap-1">
-        {layers.map((layer: Layer) => (
+        {sortedLayers.map((layer: Layer) => (
           <LayerRow
             key={layer.id}
             layer={layer}
