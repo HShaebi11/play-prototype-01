@@ -198,6 +198,12 @@ export function EffectPipeline({
   useFrame((_, delta) => {
     timeRef.current += delta;
     const root = sourceRef.current;
+
+    const width = Math.max(1, Math.floor(size.width));
+    const height = Math.max(1, Math.floor(size.height));
+
+    ensureResources(width, height);
+
     const material = materialRef.current;
     const quadScene = quadSceneRef.current;
     const quadCamera = quadCameraRef.current;
@@ -207,11 +213,6 @@ export function EffectPipeline({
     if (!root || !material || !quadScene || !quadCamera || !rtA || !rtB) {
       return;
     }
-
-    const width = Math.max(1, Math.floor(size.width));
-    const height = Math.max(1, Math.floor(size.height));
-
-    ensureResources(width, height);
 
     const canvas = compositeCanvasRef.current;
     const sceneTexture = sceneTextureRef.current;
