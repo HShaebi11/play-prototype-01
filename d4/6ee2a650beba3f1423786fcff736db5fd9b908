@@ -1,0 +1,19 @@
+src/components/canvas/EffectPipeline.tsx
+  s_5f4b10464ba9f7::t_ef849e48c82d17 201-206
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "d46ee2a650beba3f1423786fcff736db5fd9b908",
+  "prompts": {},
+  "sessions": {
+    "s_5f4b10464ba9f7": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "1aa7ae01-31df-44df-a3d0-e027131f3911",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    }
+  }
+}
