@@ -1,0 +1,246 @@
+public/globe.svg
+  s_786ef6cdbec660::t_cd9e646b7b029f 1
+src/components/input/ControllerSurface.tsx
+  s_1b013aa741f04a::t_80c806b435fcfb 1-71
+src/components/output/WaitingScreen.tsx
+  s_9bdf6cbf63d8ef::t_82132612093ecb 3,5-27,29,31-33
+  s_4ad850f7f90646::t_ccdc26317750d6 1-2,4,28,30
+src/components/panel/LayerConfig/MediaLayerConfig.tsx
+  s_ab7edd0028e150::t_b721467c624a22 1-133
+src/components/panel/VariablesTab.tsx
+  s_ab7edd0028e150::t_a634b63f7ec281 1-2,6-20,25-26,28,31-32,35-37,45-129
+  s_ab7edd0028e150::t_96b1d371f0376b 3-4,21,33,38,40-44
+  s_ab7edd0028e150::t_93618c3cc0b9a4 5
+  s_ab7edd0028e150::t_44cb9790d33e96 22-24,27,29-30,34,39
+src/components/canvas/P5Layer.tsx
+  s_590db97d274b46::t_316767388ce763 1-440
+public/vercel.svg
+  s_786ef6cdbec660::t_cd9e646b7b029f 1
+src/lib/mappings.ts
+  s_0039af3d55bf83::t_81c6f43c77e45a 1-166
+public/window.svg
+  s_786ef6cdbec660::t_cd9e646b7b029f 1
+src/lib/constants.ts
+  s_1b013aa741f04a::t_c32ab386750525 27-62
+  s_0039af3d55bf83::t_5c686bae9805fe 63-130
+  s_786ef6cdbec660::t_62e00ddab0483f 1-26
+src/lib/layers.ts
+  s_590db97d274b46::t_5a8b3e77ddd8df 1-446
+package.json
+  s_4ad850f7f90646::t_a74a2df7a21ed1 6
+  s_4ad850f7f90646::t_a9080c77308e0f 19
+  s_786ef6cdbec660::t_cd9e646b7b029f 1-5,7-11,14,17,22-25,27-28,30-35
+src/components/panel/LayersTab.tsx
+  s_ab7edd0028e150::t_6e5893ac4368b6 1-119
+public/file.svg
+  s_786ef6cdbec660::t_cd9e646b7b029f 1
+src/app/api/lan-host/route.ts
+  s_4ad850f7f90646::t_edd8ae92706ed5 1-24
+.gitignore
+  s_786ef6cdbec660::t_cd9e646b7b029f 1-41
+src/lib/types.ts
+  s_5dc8f61677c026::t_bea95c6345ff33 1-5
+src/lib/variables.ts
+  s_0039af3d55bf83::t_a95bc73bf21540 1-71
+src/components/output/JoinQrCode.tsx
+  s_4ad850f7f90646::t_dea713c2eb1860 1-5,11-21,23-52,57,62,70-72,77-120,122-130
+  s_4ad850f7f90646::t_a42b949172382c 54-56,58-61,63-69
+  s_4ad850f7f90646::t_b44f348b58019b 6-10
+src/components/panel/LayerConfig/P5LayerConfig.tsx
+  s_ab7edd0028e150::t_52714dc003ee12 1-171
+src/components/output/LoadingScreen.tsx
+  s_9bdf6cbf63d8ef::t_451337a3d9aebc 1,3-5,17,25-41,65
+  s_9bdf6cbf63d8ef::t_b3383f52623bdc 2,6-16,18-24,42-64,66-76
+src/hooks/useLayerStore.ts
+  s_590db97d274b46::t_dfb9a14ce81214 1-24
+next.config.ts
+  s_786ef6cdbec660::t_cd9e646b7b029f 1-7
+src/components/panel/LayerRow.tsx
+  s_ab7edd0028e150::t_ca7045be888201 1-181
+src/components/input/Dial.tsx
+  s_1b013aa741f04a::t_8fffdac0ac07ac 1-169
+tsconfig.json
+  s_786ef6cdbec660::t_cd9e646b7b029f 1-34
+src/components/panel/LayerConfig/ThreeLayerConfig.tsx
+  s_ab7edd0028e150::t_3582482b76c637 1-426
+src/hooks/useGamepad.ts
+  s_0039af3d55bf83::t_5d1b6cbcc54067 1-207
+src/app/page.tsx
+  s_786ef6cdbec660::t_385cf23d8ba6a4 1,5-12
+  s_786ef6cdbec660::t_cd9e646b7b029f 2-4,13-14
+src/app/layout.tsx
+  s_786ef6cdbec660::t_cd9e646b7b029f 1-2,4-15,18-33
+  s_786ef6cdbec660::t_60e0547e1ec27c 3
+  s_786ef6cdbec660::t_e1bf5842d5ed18 16-17
+README.md
+  s_786ef6cdbec660::t_cd9e646b7b029f 1-36
+src/app/input/page.tsx
+  s_4ad850f7f90646::t_6ed3cd42df3d27 3-4,10,54,80-83,86-88,98-101,106-122
+  s_89b2ad891db38b::t_7101a7948f1194 8-9,12-14,16-17,19-24,26-31,33-53,55-56,58-79,84-85,89,97,103
+  s_1b013aa741f04a::t_7838fcb22b1127 1-2,5-7,11,15,18,25,32,57,90-96,102,104-105,123
+  s_786ef6cdbec660::t_e96d121d551bbe 124
+src/components/input/XYPad.tsx
+  s_1b013aa741f04a::t_84630420ba2eea 1-112
+src/components/input/ConnectionScreen.tsx
+  s_1b013aa741f04a::t_e39b8462ee2e30 1-4,6-8,10-11,19-20,25-28,33-38,42-45,48-60
+  s_4ad850f7f90646::t_20bded08320bc0 5,9,12-18,21-24,29-32,39-41,46-47
+public/next.svg
+  s_786ef6cdbec660::t_cd9e646b7b029f 1
+src/app/output/page.tsx
+  s_9bdf6cbf63d8ef::t_7e761bd454ba69 1-5,7-8,11-12,17,22-25,27-28,42,65-67,69-70,85,144-154,160-164,167,182-190,194-196
+  s_786ef6cdbec660::t_6d23af89fd408e 68,197
+  s_d30d3689e7208e::t_e350ee866a1bf6 6,13,16,26,72-75,78,80-84,86-92,97-142,155-159,166,191-192
+  s_ab7edd0028e150::t_5deed697e39f4a 10,29-41
+  s_590db97d274b46::t_21134dae45c7df 9,15,95,193
+  s_ab7edd0028e150::t_b94d8f8ab6508a 168-170,177-180
+  s_e3e8d4c091722e::t_20c500717db1cc 171-175
+  s_0039af3d55bf83::t_9e63e5b6524334 60
+  s_e3e8d4c091722e::t_6f893fc04d82e9 165
+  s_e3e8d4c091722e::t_356b68e9ff9ce2 71,76-77,79,94
+  s_0039af3d55bf83::t_ea5e6d85ff37fe 14,43-59,61-64,93,96,143,176,181
+  s_e3e8d4c091722e::t_4b23d4f2dea9aa 18-21
+src/components/input/ModeSwitcher.tsx
+  s_1b013aa741f04a::t_242f9996a3027c 1-44
+src/styles/globals.css
+  s_786ef6cdbec660::t_6d50d323e9f0de 1-15
+  s_9bdf6cbf63d8ef::t_dc36e0e78677cc 16-32
+src/components/canvas/ThreeLayer.tsx
+  s_590db97d274b46::t_9230cf5515b4a9 1-225,228,230-240,244-246,256-263,270-272,274-420,429-506
+  s_590db97d274b46::t_cd1724698d1e66 226-227,229,241-243,247-255,264-269,273
+  s_590db97d274b46::t_51c29c5dea053e 421-428
+src/hooks/useAnimationFrame.ts
+  s_9bdf6cbf63d8ef::t_bb8b7316b5e342 1-37
+src/lib/joinUrl.ts
+  s_4ad850f7f90646::t_05bc2b61ec34d0 1-10,21-27,30-39
+  s_4ad850f7f90646::t_417b77d72c5534 11-20,28-29
+pnpm-workspace.yaml
+  s_786ef6cdbec660::t_83bb4ea490168b 2-3
+src/components/canvas/CanvasRenderer.tsx
+  s_590db97d274b46::t_aec9d52f23d6cf 1-4,11-33,38-44,46-50,52-56,58-62,64-71
+  s_590db97d274b46::t_5ac4901728dbd2 5-10
+  s_590db97d274b46::t_6b290c9954ab68 34-37,45,51,57,63
+src/lib/expressions.ts
+  s_ab7edd0028e150::t_6e25eaf8f33793 1-99,101-212
+  s_ab7edd0028e150::t_f801fa75366c6a 100
+postcss.config.mjs
+  s_786ef6cdbec660::t_cd9e646b7b029f 1-7
+src/hooks/useVariableStore.ts
+  s_0039af3d55bf83::t_c44d885be6d8b2 7,9,12
+  s_e3e8d4c091722e::t_4e7700ac6f28c1 1,3-6,8,10-11,13-14
+  s_0039af3d55bf83::t_7645b48d58a00e 2
+src/components/canvas/MediaLayer.tsx
+  s_590db97d274b46::t_b95d13673becde 1-82,84-92,94-176
+  s_590db97d274b46::t_cecb6aaf1f3528 83
+  s_590db97d274b46::t_d04f0b52508313 93
+eslint.config.mjs
+  s_786ef6cdbec660::t_cd9e646b7b029f 1-18
+src/components/panel/ControlPanel.tsx
+  s_ab7edd0028e150::t_c19190ec9a9f5c 1-11,13-198
+  s_ab7edd0028e150::t_0d921410a4057e 12
+  s_ab7edd0028e150::t_e6f4d1688f2e4a 199
+src/components/panel/InputsTab.tsx
+  s_ab7edd0028e150::t_41c0edee4bc59e 1-278
+src/hooks/usePeer.ts
+  s_4ad850f7f90646::t_449ad224031de0 270
+  s_5dc8f61677c026::t_4a28e5317a1de9 1-9,13,16-39,41-82,97-118,134,146-149,151-157,159-170,172-180,182-190,192-194,197-210,212-215,217-218,220-226,228-239,241-243,245-246,248-264,266-269,271-279,281,283,285-293
+  s_5dc8f61677c026::t_a23202835cf1af 119-133,135-145,150,158,171,181,191,195-196,211,216,219,227,240,244,247,265,280,282,284
+  s_4ad850f7f90646::t_6073f949e84899 10,12,14-15
+  s_4ad850f7f90646::t_845845687c74bc 11
+  s_4ad850f7f90646::t_cf85c7b474f2ed 40
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "932f677909f48b1e85a229c2b776e291a4910b4b",
+  "prompts": {},
+  "sessions": {
+    "s_0039af3d55bf83": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "a43c21ab-91fa-4495-8238-93f6ef54780a",
+        "model": "default"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    },
+    "s_1b013aa741f04a": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "637cdd77-4d10-466b-b88b-924e640cc163",
+        "model": "default"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    },
+    "s_4ad850f7f90646": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "c51103a0-c612-476c-bc57-56fcf96c2a0e",
+        "model": "default"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    },
+    "s_590db97d274b46": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "311a488b-ff3e-4cfb-b2e1-6d540f7fe6b8",
+        "model": "default"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    },
+    "s_5dc8f61677c026": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "97ad720b-d76b-48c8-86c3-d03647632221",
+        "model": "default"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    },
+    "s_786ef6cdbec660": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "d91ccb32-7b66-48d2-a326-2154dd444a31",
+        "model": "default"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    },
+    "s_89b2ad891db38b": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "f0418cee-941e-4512-894f-d12a82fe7109",
+        "model": "default"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    },
+    "s_9bdf6cbf63d8ef": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "3357e343-425a-473b-88d9-66dd3b6447da",
+        "model": "default"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    },
+    "s_ab7edd0028e150": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "4afc976b-f732-42d0-a3c2-505a5688a2fc",
+        "model": "default"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    },
+    "s_d30d3689e7208e": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "79c003b4-15a0-4838-9e05-3f0e2551ac3d",
+        "model": "default"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    },
+    "s_e3e8d4c091722e": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "b280f175-8905-4b06-bb7d-304594c0fe76",
+        "model": "default"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    }
+  }
+}
