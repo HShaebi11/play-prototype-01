@@ -1,0 +1,19 @@
+package.json
+  s_550771cd111523::t_495806a8925c24 5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "778d600618fd70d0912f22eaa6249846aebcf6b5",
+  "prompts": {},
+  "sessions": {
+    "s_550771cd111523": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "ae3bdd5e-4c70-44f0-8582-1ee23430660c",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    }
+  }
+}
