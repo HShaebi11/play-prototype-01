@@ -8,10 +8,12 @@ const PLACEHOLDER_ROOM_CODE = "A3F7";
 
 type WaitingScreenProps = {
   roomCode?: string;
+  lanHost?: string | null;
 };
 
 export function WaitingScreen({
   roomCode = PLACEHOLDER_ROOM_CODE,
+  lanHost = null,
 }: WaitingScreenProps) {
   return (
     <div
@@ -27,7 +29,7 @@ export function WaitingScreen({
       <p className="mt-4 text-sm font-mono text-white/50">
         Scan QR or enter code on your phone
       </p>
-      <JoinQrCode roomCode={roomCode} />
+      <JoinQrCode roomCode={roomCode} lanHost={lanHost} />
     </div>
   );
 }

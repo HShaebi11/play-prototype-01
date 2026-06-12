@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   GAMEPAD_AXIS_LEFT_TRIGGER,
   GAMEPAD_AXIS_RIGHT_TRIGGER,
@@ -183,8 +183,10 @@ function MappingRow({
 }
 
 export function InputsTab() {
-  const variableIds = useVariableStore((state) =>
-    state.getAll().map((variable) => variable.id),
+  const variablesRecord = useVariableStore((state) => state.variables);
+  const variableIds = useMemo(
+    () => Object.values(variablesRecord).map((variable) => variable.id),
+    [variablesRecord],
   );
   const mappings = useMappingStore((state) => state.mappings);
   const setMapping = useMappingStore((state) => state.setMapping);

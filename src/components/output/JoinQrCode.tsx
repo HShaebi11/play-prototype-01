@@ -11,44 +11,14 @@ import {
 
 type JoinQrCodeProps = {
   roomCode: string;
+  lanHost?: string | null;
 };
 
-type LanHostResponse = {
-  host: string | null;
-};
-
-export function JoinQrCode({ roomCode }: JoinQrCodeProps) {
-  const [lanHost, setLanHost] = useState<string | null>(null);
+export function JoinQrCode({ roomCode, lanHost = null }: JoinQrCodeProps) {
   const [joinUrl, setJoinUrl] = useState("");
   const [copied, setCopied] = useState(false);
 
   const code = normalizeRoomCode(roomCode);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    const loadLanHost = async () => {
-      try {
-        const response = await fetch("/api/lan-host");
-        if (!response.ok) {
-          return;
-        }
-
-        const data = (await response.json()) as LanHostResponse;
-        if (!cancelled && data.host) {
-          setLanHost(data.host);
-        }
-      } catch {
-        // LAN host is optional — fall back to current hostname.
-      }
-    };
-
-    loadLanHost();
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
 
   useEffect(() => {
     const { protocol, port, hostname, origin } = window.location;
