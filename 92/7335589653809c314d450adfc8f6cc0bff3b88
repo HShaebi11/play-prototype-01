@@ -1,0 +1,30 @@
+src/components/output/OutputPageClient.tsx
+  s_a279b0883b0d7b::t_7ed839a8326443 1-203
+src/components/canvas/ThreeLayer.tsx
+  s_a279b0883b0d7b::t_36ca2efd03a9e0 505
+src/lib/lan-host.ts
+  s_a279b0883b0d7b::t_84c5bb602faf2d 4,14,19
+src/components/output/JoinQrCode.tsx
+  s_a279b0883b0d7b::t_244f53bd1376ce 14,17
+src/components/output/WaitingScreen.tsx
+  s_a279b0883b0d7b::t_150fc2ab7ea4ae 32
+  s_a279b0883b0d7b::t_1015f5beaaaf5e 11,16
+src/app/output/page.tsx
+  s_a279b0883b0d7b::t_9d0559e09e6128 1-2,5,7
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "927335589653809c314d450adfc8f6cc0bff3b88",
+  "prompts": {},
+  "sessions": {
+    "s_a279b0883b0d7b": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "9f707266-2eeb-4b68-a7a8-36c75b5d0c53",
+        "model": "composer-2.5"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    }
+  }
+}
