@@ -21,6 +21,13 @@ export type EffectsLayerConfig = {
     hue?: string;
     mix?: string;
   };
+  values?: {
+    intensity?: number;
+    speed?: number;
+    hue?: number;
+    mix?: number;
+  };
+  params?: Record<string, number>;
 };
 
 export type P5SketchType =
@@ -274,6 +281,12 @@ export const DEFAULT_LAYERS: Layer[] = [
         hue: "hue",
         mix: "trail",
       },
+      values: {
+        intensity: 1,
+        speed: 1,
+        hue: 1,
+        mix: 1,
+      },
     },
   },
 ];
@@ -331,6 +344,12 @@ function defaultConfigForType(type: LayerType): Layer["config"] {
           speed: "speed",
           hue: "hue",
           mix: "trail",
+        },
+        values: {
+          intensity: 1,
+          speed: 1,
+          hue: 1,
+          mix: 1,
         },
       };
   }

@@ -11,7 +11,8 @@ import {
   type EffectPass,
 } from "@/lib/effectShaders";
 import type { EffectsLayerConfig, EffectPreset } from "@/lib/layers";
-import { readBinding } from "@/lib/readBinding";
+import { getPresetUniformParams } from "@/lib/effectPresetParams";
+import { readScaledBinding } from "@/lib/readBinding";
 
 type EffectPipelineProps = {
   sourceRef: RefObject<HTMLElement | null>;
@@ -58,13 +59,14 @@ function resolveEffectPasses(
   preset: EffectPreset,
   shaderSource: string | undefined,
   cacheKey: string,
-  cache: { key: string; passes: EffectPass[] },
-): EffectPass[] {
+  cache: { key: string; passes: EffectPass[]; effectivePreset: EffectPreset },
+): { passes: EffectPass[]; effectivePreset: EffectPreset } {
   if (cache.key === cacheKey) {
-    return cache.passes;
+    return { passes: cache.passes, effectivePreset: cache.effectivePreset };
   }
 
   let passes: EffectPass[];
+  let effectivePreset = preset;
 
   if (preset === "custom") {
     const [customPass] = getPassesForPreset("custom", shaderSource);
@@ -77,6 +79,7 @@ function resolveEffectPasses(
     if (!valid) {
       console.warn("[EffectsLayer] Falling back to cinema preset");
       passes = getPassesForPreset("cinema");
+      effectivePreset = "cinema";
     } else {
       passes = [customPass];
     }
@@ -86,7 +89,8 @@ function resolveEffectPasses(
 
   cache.key = cacheKey;
   cache.passes = passes;
-  return passes;
+  cache.effectivePreset = effectivePreset;
+  return { passes, effectivePreset };
 }
 
 export function EffectPipeline({
@@ -103,9 +107,14 @@ export function EffectPipeline({
   const quadSceneRef = useRef<THREE.Scene | null>(null);
   const quadCameraRef = useRef<THREE.OrthographicCamera | null>(null);
   const materialRef = useRef<THREE.ShaderMaterial | null>(null);
-  const passCacheRef = useRef<{ key: string; passes: EffectPass[] }>({
+  const passCacheRef = useRef<{
+    key: string;
+    passes: EffectPass[];
+    effectivePreset: EffectPreset;
+  }>({
     key: "",
     passes: [],
+    effectivePreset: "cinema",
   });
 
   useEffect(() => {
@@ -173,6 +182,9 @@ export function EffectPipeline({
           uHue: { value: 0.5 },
           uMix: { value: 1 },
           uOpacity: { value: 1 },
+          uParam1: { value: 1 },
+          uParam2: { value: 1 },
+          uParam3: { value: 1 },
         },
       });
       const mesh = new THREE.Mesh(
@@ -216,25 +228,49 @@ export function EffectPipeline({
     sceneTexture.needsUpdate = true;
 
     const bindings = config.bindings;
+    const values = config.values ?? {};
+
     material.uniforms.uResolution.value.set(width, height);
     material.uniforms.uTime.value = timeRef.current;
-    material.uniforms.uIntensity.value = readBinding(
-      bindings.intensity ?? "density",
+    material.uniforms.uIntensity.value = readScaledBinding(
+      bindings.intensity,
+      "density",
+      values.intensity ?? 1,
     );
-    material.uniforms.uSpeed.value = readBinding(bindings.speed ?? "speed");
-    material.uniforms.uHue.value = readBinding(bindings.hue ?? "hue");
-    material.uniforms.uMix.value = readBinding(bindings.mix ?? "trail");
+    material.uniforms.uSpeed.value = readScaledBinding(
+      bindings.speed,
+      "speed",
+      values.speed ?? 1,
+    );
+    material.uniforms.uHue.value = readScaledBinding(
+      bindings.hue,
+      "hue",
+      values.hue ?? 1,
+    );
+    material.uniforms.uMix.value = readScaledBinding(
+      bindings.mix,
+      "trail",
+      values.mix ?? 1,
+    );
     material.uniforms.uOpacity.value = opacity;
     material.uniforms.uScene.value = sceneTexture;
 
     const cacheKey = `${config.preset}:${config.shaderSource ?? ""}`;
-    const effectPasses = resolveEffectPasses(
+    const { passes: effectPasses, effectivePreset } = resolveEffectPasses(
       gl,
       config.preset,
       config.shaderSource,
       cacheKey,
       passCacheRef.current,
     );
+
+    const presetParams = getPresetUniformParams(
+      effectivePreset,
+      config.params,
+    );
+    material.uniforms.uParam1.value = presetParams.uParam1;
+    material.uniforms.uParam2.value = presetParams.uParam2;
+    material.uniforms.uParam3.value = presetParams.uParam3;
 
     let input: THREE.Texture = sceneTexture;
     let ping = 0;

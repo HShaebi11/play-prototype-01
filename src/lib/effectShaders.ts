@@ -26,6 +26,9 @@ uniform float uSpeed;
 uniform float uHue;
 uniform float uMix;
 uniform float uOpacity;
+uniform float uParam1;
+uniform float uParam2;
+uniform float uParam3;
 
 varying vec2 vUv;
 
@@ -56,9 +59,9 @@ const PASS_VIGNETTE_GRADE = wrapFragment(`
 void main() {
   vec4 col = texture2D(uInput, vUv);
   vec3 graded = hueRotate(col.rgb, uHue * 0.5);
-  graded *= 0.9 + uIntensity * 0.2;
+  graded *= 0.9 + uIntensity * uParam3;
   float dist = distance(vUv, vec2(0.5));
-  float vignette = 1.0 - smoothstep(0.35, 0.85, dist) * uIntensity * 0.7;
+  float vignette = 1.0 - smoothstep(0.35, 0.85, dist) * uIntensity * uParam1;
   gl_FragColor = vec4(graded * vignette, col.a);
 }
 `);
@@ -70,15 +73,16 @@ float hash(vec2 p) {
 
 void main() {
   vec4 col = texture2D(uInput, vUv);
-  float grain = (hash(vUv * uResolution + uTime * uSpeed * 10.0) - 0.5) * uIntensity * 0.15;
+  float grain = (hash(vUv * uResolution + uTime * uSpeed * 10.0) - 0.5) * uIntensity * uParam2;
   gl_FragColor = vec4(col.rgb + grain, col.a);
 }
 `);
 
 const PASS_GLITCH_DISPLACE = wrapFragment(`
 void main() {
-  float block = floor(vUv.y * 20.0 + uTime * uSpeed * 30.0);
-  float shift = (fract(sin(block * 12.9898) * 43758.5453) - 0.5) * uIntensity * 0.08;
+  float blocks = 5.0 + uParam2 * 35.0;
+  float block = floor(vUv.y * blocks + uTime * uSpeed * 30.0);
+  float shift = (fract(sin(block * 12.9898) * 43758.5453) - 0.5) * uIntensity * uParam1;
   vec4 col = texture2D(uInput, vUv + vec2(shift, 0.0));
   gl_FragColor = col;
 }
@@ -86,7 +90,7 @@ void main() {
 
 const PASS_RGB_SPLIT = wrapFragment(`
 void main() {
-  float offset = uIntensity * 0.02;
+  float offset = uIntensity * uParam1 * 1.33;
   float r = texture2D(uInput, vUv + vec2(offset, 0.0)).r;
   float g = texture2D(uInput, vUv).g;
   float b = texture2D(uInput, vUv - vec2(offset, 0.0)).b;
@@ -96,7 +100,7 @@ void main() {
 
 const PASS_CHROMATIC = wrapFragment(`
 void main() {
-  float offset = uIntensity * 0.015 * (1.0 + sin(uTime * uSpeed * 2.0) * 0.5);
+  float offset = uIntensity * uParam1 * (1.0 + sin(uTime * uSpeed * 2.0) * 0.5);
   float r = texture2D(uInput, vUv + vec2(offset, 0.0)).r;
   float g = texture2D(uInput, vUv).g;
   float b = texture2D(uInput, vUv - vec2(offset, 0.0)).b;
@@ -107,7 +111,7 @@ void main() {
 const PASS_SOFT_BLUR = wrapFragment(`
 void main() {
   vec2 texel = 1.0 / uResolution;
-  float radius = uIntensity * 2.0;
+  float radius = uIntensity * uParam1;
   vec4 col = vec4(0.0);
   col += texture2D(uInput, vUv + texel * vec2(-radius, 0.0)) * 0.2;
   col += texture2D(uInput, vUv + texel * vec2(radius, 0.0)) * 0.2;
@@ -129,7 +133,7 @@ const PASS_SOFT_VIGNETTE = wrapFragment(`
 void main() {
   vec4 col = texture2D(uInput, vUv);
   float dist = distance(vUv, vec2(0.5));
-  float vignette = 1.0 - smoothstep(0.4, 0.9, dist) * uIntensity * 0.6;
+  float vignette = 1.0 - smoothstep(0.4, 0.9, dist) * uIntensity * uParam2;
   gl_FragColor = vec4(col.rgb * vignette, col.a);
 }
 `);
