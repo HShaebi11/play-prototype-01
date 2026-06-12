@@ -1,0 +1,51 @@
+src/components/canvas/EffectsLayer.tsx
+  s_f7e86df3af6465::t_04bccd77bde96f 1-35
+src/lib/compositeLayers.ts
+  s_f7e86df3af6465::t_d0fa7a9ef7693a 1-54
+src/lib/readBinding.ts
+  s_f7e86df3af6465::t_0d2d3087ce2964 1-11
+src/components/panel/LayersTab.tsx
+  s_f7e86df3af6465::t_db2cf25d06216c 12,23
+  s_f7e86df3af6465::t_9609731942aefe 105-107
+src/components/panel/LayerRow.tsx
+  s_f7e86df3af6465::t_db66d215f1359e 8
+  s_f7e86df3af6465::t_f3d99d5fcca021 30-31
+  s_f7e86df3af6465::t_f2cb0996cc261c 180-182
+src/components/canvas/EffectPipeline.tsx
+  s_f7e86df3af6465::t_b051aa895f774e 1-96,99-185,188-219,221-268
+  s_f7e86df3af6465::t_da02306c029c56 97-98
+  s_f7e86df3af6465::t_b073bd0a47eae5 186-187
+  s_f7e86df3af6465::t_551e0e03a46d01 220
+src/components/panel/LayerConfig/EffectsLayerConfig.tsx
+  s_f7e86df3af6465::t_7faffd998c80f7 1-145
+src/lib/effectShaders.ts
+  s_f7e86df3af6465::t_1e0e8aef7ab471 1-212
+src/components/canvas/CanvasRenderer.tsx
+  s_f7e86df3af6465::t_fc3088a1fd0a81 4,7,22-26,33-46,53-61,63-99,101-112
+src/lib/layers.ts
+  s_f7e86df3af6465::t_1bb30fddef902d 5-24
+  s_f7e86df3af6465::t_f059ca4b15f788 119-123
+  s_f7e86df3af6465::t_948484fa3b399e 136-141
+  s_f7e86df3af6465::t_57e403426560e5 262-278
+  s_f7e86df3af6465::t_0884e5df297b75 326-335
+  s_f7e86df3af6465::t_15ddd5583d33b8 347-355,357-361
+  s_f7e86df3af6465::t_41ddaffb171580 393-396,404,407
+  s_f7e86df3af6465::t_8c4dad209dc6dd 434
+  s_f7e86df3af6465::t_622538e41d73db 508-509,511-521
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "3851999c7fe9020796dc47832f95c32b16ed571c",
+  "prompts": {},
+  "sessions": {
+    "s_f7e86df3af6465": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "297d03a9-bef8-4e31-8e04-89951206d29a",
+        "model": "default"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    }
+  }
+}
