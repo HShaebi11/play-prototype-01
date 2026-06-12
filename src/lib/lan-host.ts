@@ -1,11 +1,7 @@
 import { networkInterfaces } from "node:os";
 
-type LanHostResponse = {
-  host: string | null;
-};
-
 /** First non-internal IPv4 — used to build phone join URLs when laptop uses localhost. */
-export async function GET(): Promise<Response> {
+export function getLanHost(): string | null {
   const nets = networkInterfaces();
 
   for (const entries of Object.values(nets)) {
@@ -15,10 +11,10 @@ export async function GET(): Promise<Response> {
 
     for (const net of entries) {
       if (net.family === "IPv4" && !net.internal) {
-        return Response.json({ host: net.address } satisfies LanHostResponse);
+        return net.address;
       }
     }
   }
 
-  return Response.json({ host: null } satisfies LanHostResponse);
+  return null;
 }

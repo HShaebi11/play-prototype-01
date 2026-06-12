@@ -502,7 +502,7 @@ export function ThreeLayer({ config }: ThreeLayerProps) {
     <Canvas
       className="h-full w-full"
       style={{ background: "transparent" }}
-      renderer={{ alpha: true, antialias: true }}
+      gl={{ alpha: true, antialias: true }}
       camera={DEFAULT_CAMERA}
     >
       <ThreeScene config={config} />
