@@ -5,6 +5,7 @@ import type { Layer } from "@/lib/layers";
 import { useLayerStore } from "@/hooks/useLayerStore";
 import { ACCENT, PANEL_SELECTED_TINT } from "@/lib/constants";
 import { MediaLayerConfigPanel } from "@/components/panel/LayerConfig/MediaLayerConfig";
+import { EffectsLayerConfigPanel } from "@/components/panel/LayerConfig/EffectsLayerConfig";
 import { P5LayerConfigPanel } from "@/components/panel/LayerConfig/P5LayerConfig";
 import { ThreeLayerConfigPanel } from "@/components/panel/LayerConfig/ThreeLayerConfig";
 
@@ -26,6 +27,8 @@ function typeBadgeStyle(type: Layer["type"]): { label: string; color: string } {
       return { label: "P5", color: "rgba(255,255,255,0.9)" };
     case "media":
       return { label: "MEDIA", color: "rgba(255,255,255,0.9)" };
+    case "effects":
+      return { label: "FX", color: "#a78bfa" };
   }
 }
 
@@ -173,6 +176,9 @@ export function LayerRow({
           {layer.type === "p5" ? <P5LayerConfigPanel layerId={layer.id} /> : null}
           {layer.type === "media" ? (
             <MediaLayerConfigPanel layerId={layer.id} />
+          ) : null}
+          {layer.type === "effects" ? (
+            <EffectsLayerConfigPanel layerId={layer.id} />
           ) : null}
         </div>
       ) : null}
