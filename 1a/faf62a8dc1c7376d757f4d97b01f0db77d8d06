@@ -1,0 +1,76 @@
+src/app/input/page.tsx
+  s_5f4b10464ba9f7::t_35c92a32c0d61d 18-22
+  s_5f4b10464ba9f7::t_2845517a992450 91
+src/components/panel/LayerConfig/ThreeLayerConfig.tsx
+  s_5f4b10464ba9f7::t_0bde3633d3e182 12
+  s_5f4b10464ba9f7::t_386fc0467bbe34 71,159
+  s_5f4b10464ba9f7::t_931a9c1b216785 69,77,84,91,98,143,150,157,165,172,372,381,390
+src/app/layout.tsx
+  s_5f4b10464ba9f7::t_6f9249c4411c05 1
+  s_5f4b10464ba9f7::t_0e73851e39acaf 20-25
+src/components/panel/ControllerTab.tsx
+  s_5f4b10464ba9f7::t_3216e633464464 76-82,86-96,108,110,123,125-127,146
+src/lib/types.ts
+  s_5f4b10464ba9f7::t_c5bcc158ff9695 13
+src/components/output/OutputPageClient.tsx
+  s_5f4b10464ba9f7::t_c80bf8beb0983f 89
+  s_5f4b10464ba9f7::t_d0ab17694c7ae4 121-125
+  s_5f4b10464ba9f7::t_fcae61b192a8b9 126
+  s_5f4b10464ba9f7::t_3acefcf1b4cb2d 19
+src/lib/variables.ts
+  s_5f4b10464ba9f7::t_d4a13de090ca71 26
+src/components/panel/ControlPanel.tsx
+  s_5f4b10464ba9f7::t_5ade7fe1a79245 3,33,36,45-46,51-52,55,58-85,88-108,112,114
+src/hooks/usePeer.ts
+  s_5f4b10464ba9f7::t_a0b222842a29ec 339
+  s_5f4b10464ba9f7::t_1ff2a6472ada38 208
+  s_5f4b10464ba9f7::t_e481f4a71e442b 310
+  s_5f4b10464ba9f7::t_3713ae41e83d86 35
+  s_5f4b10464ba9f7::t_ae1384352ffb7d 86-92
+  s_5f4b10464ba9f7::t_e4831523f19557 138-140
+src/components/panel/VariablesTab.tsx
+  s_5f4b10464ba9f7::t_72ed837b63b988 29,73,77,81-110,113,117,124-126,139,141-144,151,154,167-175,177-184
+  s_5f4b10464ba9f7::t_128d7b26c807df 176
+  s_5f4b10464ba9f7::t_2b2d407ae43010 17
+src/components/panel/LayerConfig/EffectsLayerConfig.tsx
+  s_5f4b10464ba9f7::t_1e514032e979ba 30-33
+  s_5f4b10464ba9f7::t_cdbb87f3cfd558 226-227,230-231
+  s_5f4b10464ba9f7::t_d7d6a51d47d29b 127
+  s_5f4b10464ba9f7::t_2b86f8caf7ceb5 10
+src/components/panel/LayerConfig/MediaLayerConfig.tsx
+  s_5f4b10464ba9f7::t_0151f757bcc1a4 6,44,49,116,118-122
+src/styles/globals.css
+  s_5f4b10464ba9f7::t_5d1a98596e9788 33-47
+src/components/input/ControllerSurface.tsx
+  s_5f4b10464ba9f7::t_d68c926f565be5 4,6-8,12,19-22,28-31,41,47-48,50-52,56,60,84,91-106,109,118,120
+src/components/panel/ControllerLayoutEditor.tsx
+  s_5f4b10464ba9f7::t_d4dff3f513e481 1-200
+src/lib/readBinding.ts
+  s_5f4b10464ba9f7::t_4fcf3c17b2ce29 20,22-25
+src/components/panel/LayerConfig/P5LayerConfig.tsx
+  s_5f4b10464ba9f7::t_c4550f1a94117c 7,43-50,56,100,102-106
+src/components/canvas/EffectPipeline.tsx
+  s_5f4b10464ba9f7::t_2f84c5bf41a1f9 239,244,249,254
+src/components/controller/ControllerLayoutRenderer.tsx
+  s_5f4b10464ba9f7::t_f5bbed625a5d32 24
+src/components/panel/VariableSelect.tsx
+  s_5f4b10464ba9f7::t_1b636862d6c826 1-52
+src/lib/controllerConfig.ts
+  s_5f4b10464ba9f7::t_4ea33b8c6b2a85 8-14,20,47-51,60-101,114,122,130,139,146,153-156,166,174,182,190,195-219,305-312,335-365,391-400,403-405
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "1afaf62a8dc1c7376d757f4d97b01f0db77d8d06",
+  "prompts": {},
+  "sessions": {
+    "s_5f4b10464ba9f7": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "1aa7ae01-31df-44df-a3d0-e027131f3911",
+        "model": "default"
+      },
+      "human_author": "Hamza <hshaebi.11@gmail.com>"
+    }
+  }
+}
