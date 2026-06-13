@@ -11,6 +11,9 @@ import { ACCENT, BG_COLOR, PANEL_SELECTED_TINT } from "@/lib/constants";
 
 export function VariablesTab() {
   const variablesRecord = useVariableStore((state) => state.variables);
+  const addVariable = useVariableStore((state) => state.add);
+  const updateVariable = useVariableStore((state) => state.update);
+  const removeVariable = useVariableStore((state) => state.remove);
   const variables = useMemo(
     () => Object.values(variablesRecord),
     [variablesRecord],
@@ -21,6 +24,7 @@ export function VariablesTab() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [formulaDraft, setFormulaDraft] = useState("");
   const [errors, setErrors] = useState<Record<string, boolean>>({});
+  const [newId, setNewId] = useState("");
 
   useAnimationFrame(() => {
     const allVariables = useVariableStoreApi.getState().getAll();
@@ -54,12 +58,47 @@ export function VariablesTab() {
     }
   };
 
+  const handleAddVariable = () => {
+    const id = newId.trim().toLowerCase().replace(/\s+/g, "_");
+    if (!id || variablesRecord[id]) {
+      return;
+    }
+
+    addVariable({
+      id,
+      label: id,
+      description: "Describe what this variable controls",
+      defaultValue: 0.5,
+    });
+    setExpression(id, id);
+    setNewId("");
+  };
+
   return (
     <div className="flex flex-col gap-3">
+      <div className="flex gap-2">
+        <input
+          className="min-w-0 flex-1 rounded border bg-black/40 px-2 py-1 font-mono text-[10px] text-white outline-none"
+          style={{ borderColor: "rgba(255,255,255,0.15)" }}
+          placeholder="new_variable_id"
+          value={newId}
+          onChange={(event) => setNewId(event.target.value)}
+        />
+        <button
+          type="button"
+          className="shrink-0 rounded px-2 py-1 text-[9px] tracking-wider"
+          style={{ backgroundColor: ACCENT, color: BG_COLOR }}
+          onClick={handleAddVariable}
+        >
+          + Add
+        </button>
+      </div>
+
       <table className="w-full border-collapse text-[10px]">
         <thead>
           <tr className="text-left text-white/50">
-            <th className="pb-2 pr-2 font-normal">Variable</th>
+            <th className="pb-2 pr-2 font-normal">ID</th>
+            <th className="pb-2 pr-2 font-normal">Description</th>
             <th className="pb-2 font-normal">Expression</th>
           </tr>
         </thead>
@@ -81,22 +120,49 @@ export function VariablesTab() {
                   setFormulaDraft(expression);
                 }}
               >
-                <td className="py-1 pr-2 font-mono text-white/80">{variable.id}</td>
-                <td className="py-1">
+                <td className="py-1 pr-2 align-top font-mono text-white/80">
+                  {variable.id}
+                </td>
+                <td className="py-1 pr-2 align-top">
                   <input
-                    className="w-full rounded border bg-transparent px-1.5 py-0.5 font-mono outline-none"
-                    style={{
-                      borderColor: hasError
-                        ? "#ef4444"
-                        : "rgba(255,255,255,0.15)",
-                      color: hasError ? "#ef4444" : "rgba(255,255,255,0.9)",
-                    }}
-                    value={expression}
+                    className="w-full rounded border bg-transparent px-1 py-0.5 text-[9px] text-white/70 outline-none"
+                    style={{ borderColor: "rgba(255,255,255,0.1)" }}
+                    value={variable.description}
                     onChange={(event) =>
-                      updateExpression(variable.id, event.target.value)
+                      updateVariable(variable.id, {
+                        description: event.target.value,
+                      })
                     }
                     onClick={(event) => event.stopPropagation()}
                   />
+                </td>
+                <td className="py-1 align-top">
+                  <div className="flex items-start gap-1">
+                    <input
+                      className="min-w-0 flex-1 rounded border bg-transparent px-1.5 py-0.5 font-mono outline-none"
+                      style={{
+                        borderColor: hasError
+                          ? "#ef4444"
+                          : "rgba(255,255,255,0.15)",
+                        color: hasError ? "#ef4444" : "rgba(255,255,255,0.9)",
+                      }}
+                      value={expression}
+                      onChange={(event) =>
+                        updateExpression(variable.id, event.target.value)
+                      }
+                      onClick={(event) => event.stopPropagation()}
+                    />
+                    <button
+                      type="button"
+                      className="shrink-0 text-[8px] text-red-400 hover:underline"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        removeVariable(variable.id);
+                      }}
+                    >
+                      ×
+                    </button>
+                  </div>
                 </td>
               </tr>
             );

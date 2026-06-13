@@ -13,11 +13,12 @@ import {
   PANEL_BG_COLOR,
   PANEL_BORDER_COLOR,
 } from "@/lib/constants";
+import { ControllerTab } from "@/components/panel/ControllerTab";
 import { InputsTab } from "@/components/panel/InputsTab";
 import { LayersTab } from "@/components/panel/LayersTab";
 import { VariablesTab } from "@/components/panel/VariablesTab";
 
-export type PanelTab = "layers" | "variables" | "inputs";
+export type PanelTab = "layers" | "variables" | "inputs" | "controller";
 
 type ControlPanelProps = {
   open: boolean;
@@ -27,6 +28,7 @@ type ControlPanelProps = {
 const TABS: Array<{ id: PanelTab; label: string }> = [
   { id: "layers", label: "LAYERS" },
   { id: "variables", label: "VARIABLES" },
+  { id: "controller", label: "CONTROLLER" },
   { id: "inputs", label: "INPUTS" },
 ];
 
@@ -190,6 +192,7 @@ export function ControlPanel({ open, onOpenChange }: ControlPanelProps) {
           <div className="min-h-0 flex-1 overflow-y-auto p-3">
             {activeTab === "layers" && <LayersTab />}
             {activeTab === "variables" && <VariablesTab />}
+            {activeTab === "controller" && <ControllerTab />}
             {activeTab === "inputs" && <InputsTab />}
           </div>
         </div>
