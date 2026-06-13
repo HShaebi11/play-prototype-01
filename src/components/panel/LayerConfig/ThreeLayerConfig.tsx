@@ -9,6 +9,7 @@ import type {
   ThreeObject,
 } from "@/lib/layers";
 import { useLayerStore } from "@/hooks/useLayerStore";
+import { VariableSelect } from "@/components/panel/VariableSelect";
 import { ACCENT } from "@/lib/constants";
 
 type ThreeLayerConfigPanelProps = {
@@ -33,32 +34,6 @@ const LIGHT_OPTIONS: ThreeLightType[] = [
 
 function createId(prefix: string): string {
   return `${prefix}-${Math.random().toString(36).slice(2, 9)}`;
-}
-
-function BindingInput({
-  label,
-  value,
-  onChange,
-}: {
-  label: string;
-  value?: string;
-  onChange: (value: string | undefined) => void;
-}) {
-  return (
-    <label className="flex items-center gap-1 text-[9px] text-white/60">
-      <span className="w-20 shrink-0">{label}</span>
-      <input
-        className="min-w-0 flex-1 rounded border bg-black/30 px-1 py-0.5 font-mono text-[9px] text-white outline-none"
-        style={{ borderColor: "rgba(255,255,255,0.15)" }}
-        value={value ?? ""}
-        placeholder="—"
-        onChange={(event) => {
-          const next = event.target.value.trim();
-          onChange(next || undefined);
-        }}
-      />
-    </label>
-  );
 }
 
 function ObjectEditor({
@@ -91,35 +66,36 @@ function ObjectEditor({
         </button>
       </div>
       <div className="flex flex-col gap-1">
-        <BindingInput
+        <VariableSelect
           label="posX"
+          labelWidth="w-20"
           value={object.bindings.posX}
           onChange={(posX) =>
             onChange({ ...object, bindings: { ...object.bindings, posX } })
           }
         />
-        <BindingInput
+        <VariableSelect
           label="posY"
           value={object.bindings.posY}
           onChange={(posY) =>
             onChange({ ...object, bindings: { ...object.bindings, posY } })
           }
         />
-        <BindingInput
+        <VariableSelect
           label="posZ"
           value={object.bindings.posZ}
           onChange={(posZ) =>
             onChange({ ...object, bindings: { ...object.bindings, posZ } })
           }
         />
-        <BindingInput
+        <VariableSelect
           label="scale"
           value={object.bindings.scale}
           onChange={(scale) =>
             onChange({ ...object, bindings: { ...object.bindings, scale } })
           }
         />
-        <BindingInput
+        <VariableSelect
           label="rotationSpeed"
           value={object.bindings.rotationSpeed}
           onChange={(rotationSpeed) =>
@@ -164,35 +140,36 @@ function LightEditor({
         </button>
       </div>
       <div className="flex flex-col gap-1">
-        <BindingInput
+        <VariableSelect
           label="intensity"
           value={light.bindings.intensity}
           onChange={(intensity) =>
             onChange({ ...light, bindings: { ...light.bindings, intensity } })
           }
         />
-        <BindingInput
+        <VariableSelect
           label="colourHue"
           value={light.bindings.colourHue}
           onChange={(colourHue) =>
             onChange({ ...light, bindings: { ...light.bindings, colourHue } })
           }
         />
-        <BindingInput
+        <VariableSelect
           label="posX"
+          labelWidth="w-20"
           value={light.bindings.posX}
           onChange={(posX) =>
             onChange({ ...light, bindings: { ...light.bindings, posX } })
           }
         />
-        <BindingInput
+        <VariableSelect
           label="posY"
           value={light.bindings.posY}
           onChange={(posY) =>
             onChange({ ...light, bindings: { ...light.bindings, posY } })
           }
         />
-        <BindingInput
+        <VariableSelect
           label="posZ"
           value={light.bindings.posZ}
           onChange={(posZ) =>
@@ -392,7 +369,7 @@ export function ThreeLayerConfigPanel({ layerId }: ThreeLayerConfigPanelProps) {
           CAMERA
         </span>
         <div className="flex flex-col gap-1">
-          <BindingInput
+          <VariableSelect
             label="posX"
             value={config.cameraBindings.posX}
             onChange={(posX) =>
@@ -401,7 +378,7 @@ export function ThreeLayerConfigPanel({ layerId }: ThreeLayerConfigPanelProps) {
               })
             }
           />
-          <BindingInput
+          <VariableSelect
             label="posY"
             value={config.cameraBindings.posY}
             onChange={(posY) =>
@@ -410,7 +387,7 @@ export function ThreeLayerConfigPanel({ layerId }: ThreeLayerConfigPanelProps) {
               })
             }
           />
-          <BindingInput
+          <VariableSelect
             label="posZ"
             value={config.cameraBindings.posZ}
             onChange={(posZ) =>

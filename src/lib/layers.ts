@@ -2,7 +2,33 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { createClientStorage } from "@/lib/persist-storage";
 
-export type LayerType = "threejs" | "p5" | "media";
+export type LayerType = "threejs" | "p5" | "media" | "effects";
+
+export type EffectPreset =
+  | "off"
+  | "cinema"
+  | "glitch"
+  | "rgb_split"
+  | "dream"
+  | "custom";
+
+export type EffectsLayerConfig = {
+  preset: EffectPreset;
+  shaderSource?: string;
+  bindings: {
+    intensity?: string;
+    speed?: string;
+    hue?: string;
+    mix?: string;
+  };
+  values?: {
+    intensity?: number;
+    speed?: number;
+    hue?: number;
+    mix?: number;
+  };
+  params?: Record<string, number>;
+};
 
 export type P5SketchType =
   | "noise_field"
@@ -97,7 +123,11 @@ export type Layer = {
   visible: boolean;
   opacity: number;
   zIndex: number;
-  config: ThreeJSLayerConfig | P5LayerConfig | MediaLayerConfig;
+  config:
+    | ThreeJSLayerConfig
+    | P5LayerConfig
+    | MediaLayerConfig
+    | EffectsLayerConfig;
 };
 
 export type LayerStore = {
@@ -110,7 +140,12 @@ export type LayerStore = {
   setLayerName: (id: string, name: string) => void;
   updateLayerConfig: (
     id: string,
-    config: Partial<ThreeJSLayerConfig | P5LayerConfig | MediaLayerConfig>,
+    config: Partial<
+      | ThreeJSLayerConfig
+      | P5LayerConfig
+      | MediaLayerConfig
+      | EffectsLayerConfig
+    >,
   ) => void;
   setMediaSrc: (
     id: string,
@@ -231,6 +266,29 @@ export const DEFAULT_LAYERS: Layer[] = [
       cameraBindings: {},
     },
   },
+  {
+    id: "layer-effects-master",
+    type: "effects",
+    name: "Master Effects",
+    visible: true,
+    opacity: 1,
+    zIndex: 999,
+    config: {
+      preset: "cinema",
+      bindings: {
+        intensity: "density",
+        speed: "speed",
+        hue: "hue",
+        mix: "trail",
+      },
+      values: {
+        intensity: 1,
+        speed: 1,
+        hue: 1,
+        mix: 1,
+      },
+    },
+  },
 ];
 
 function defaultConfigForType(type: LayerType): Layer["config"] {
@@ -278,6 +336,22 @@ function defaultConfigForType(type: LayerType): Layer["config"] {
         fit: "cover",
         bindings: {},
       };
+    case "effects":
+      return {
+        preset: "cinema",
+        bindings: {
+          intensity: "density",
+          speed: "speed",
+          hue: "hue",
+          mix: "trail",
+        },
+        values: {
+          intensity: 1,
+          speed: 1,
+          hue: 1,
+          mix: 1,
+        },
+      };
   }
 }
 
@@ -289,7 +363,21 @@ function defaultNameForType(type: LayerType): string {
       return "p5 Layer";
     case "media":
       return "Media Layer";
+    case "effects":
+      return "Effects Layer";
   }
+}
+
+function pinEffectsLayerOnTop(layers: Layer[]): Layer[] {
+  const effectsIndex = layers.findIndex((layer) => layer.type === "effects");
+  if (effectsIndex < 0) {
+    return layers;
+  }
+
+  const maxZ = layers.reduce((max, layer) => Math.max(max, layer.zIndex), -1);
+  return layers.map((layer) =>
+    layer.type === "effects" ? { ...layer, zIndex: maxZ + 1 } : layer,
+  );
 }
 
 function stripTransientFromLayers(layers: Layer[]): Layer[] {
@@ -321,6 +409,10 @@ export const useLayerStore = create<LayerStore>()(
 
       addLayer: (type) => {
         const layers = get().layers;
+        if (type === "effects" && layers.some((layer) => layer.type === "effects")) {
+          return;
+        }
+
         const maxZ = layers.reduce((max, layer) => Math.max(max, layer.zIndex), -1);
         const newLayer: Layer = {
           id: createId("layer"),
@@ -328,10 +420,10 @@ export const useLayerStore = create<LayerStore>()(
           name: defaultNameForType(type),
           visible: true,
           opacity: 1,
-          zIndex: maxZ + 1,
+          zIndex: type === "effects" ? maxZ + 1000 : maxZ + 1,
           config: defaultConfigForType(type),
         };
-        set({ layers: [...layers, newLayer] });
+        set({ layers: pinEffectsLayerOnTop([...layers, newLayer]) });
       },
 
       removeLayer: (id) => {
@@ -358,7 +450,7 @@ export const useLayerStore = create<LayerStore>()(
           zIndex: index,
         }));
 
-        set({ layers: next });
+        set({ layers: pinEffectsLayerOnTop(next) });
       },
 
       setLayerVisibility: (id, visible) => {
@@ -432,8 +524,20 @@ export const useLayerStore = create<LayerStore>()(
       getLayer: (id) => get().layers.find((layer) => layer.id === id),
 
       initialise: () => {
-        if (get().layers.length === 0) {
+        const layers = get().layers;
+        if (layers.length === 0) {
           set({ layers: DEFAULT_LAYERS });
+          return;
+        }
+
+        const hasEffects = layers.some((layer) => layer.type === "effects");
+        if (!hasEffects) {
+          const effectsDefault = DEFAULT_LAYERS.find(
+            (layer) => layer.type === "effects",
+          );
+          if (effectsDefault) {
+            set({ layers: pinEffectsLayerOnTop([...layers, effectsDefault]) });
+          }
         }
       },
     }),

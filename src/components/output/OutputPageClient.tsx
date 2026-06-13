@@ -16,6 +16,7 @@ import { useLayerStoreApi } from "@/hooks/useLayerStore";
 import { usePeer } from "@/hooks/usePeer";
 import {
   DEFAULT_VARIABLES,
+  useVariableStore,
   useVariableStoreApi,
 } from "@/hooks/useVariableStore";
 import {
@@ -24,6 +25,11 @@ import {
   SCREEN_TRANSITION_MS,
 } from "@/lib/constants";
 import { useMappingStore } from "@/lib/mappings";
+import {
+  DEFAULT_CONTROLLER_CONFIG,
+  syncMappingsFromConfig,
+  useControllerConfigStore,
+} from "@/lib/controllerConfig";
 
 type OutputScreen = "loading" | "waiting" | "active";
 
@@ -75,7 +81,12 @@ export function OutputPageClient({ lanHost }: OutputPageClientProps) {
   const [mode, setMode] = useState<PlayMode>("geo");
   const [panelOpen, setPanelOpen] = useState(false);
 
-  const { localPeerId, isConnected, lastMessage } = usePeer({ mode: "host" });
+  const { localPeerId, isConnected, lastMessage, send } = usePeer({
+    mode: "host",
+  });
+
+  const controllerConfig = useControllerConfigStore((state) => state.config);
+  const variables = useVariableStore((state) => state.variables);
 
   const gamepadStatus = useGamepad({
     onModeChange: setMode,
@@ -97,7 +108,22 @@ export function OutputPageClient({ lanHost }: OutputPageClientProps) {
   useEffect(() => {
     useVariableStoreApi.getState().initialise(DEFAULT_VARIABLES);
     useLayerStoreApi.getState().initialise();
+    syncMappingsFromConfig(
+      useControllerConfigStore.getState().config ?? DEFAULT_CONTROLLER_CONFIG,
+    );
   }, []);
+
+  useEffect(() => {
+    if (!isConnected) {
+      return;
+    }
+
+    const variableDefaults = Object.fromEntries(
+      Object.entries(variables).map(([id, variable]) => [id, variable.value]),
+    );
+
+    send({ type: "config", config: controllerConfig, variableDefaults });
+  }, [isConnected, controllerConfig, variables, send]);
 
   useEffect(() => {
     if (!lastMessage) {
@@ -108,11 +134,21 @@ export function OutputPageClient({ lanHost }: OutputPageClientProps) {
     const setVariable = useVariableStoreApi.getState().set;
 
     switch (lastMessage.type) {
-      case "dial":
-      case "slider": {
+      case "dial": {
         const target = getTarget({
           device: "phone",
           type: "dial",
+          id: lastMessage.id,
+        });
+        if (target) {
+          setVariable(target, lastMessage.value, "phone");
+        }
+        break;
+      }
+      case "slider": {
+        const target = getTarget({
+          device: "phone",
+          type: "slider",
           id: lastMessage.id,
         });
         if (target) {
@@ -124,11 +160,13 @@ export function OutputPageClient({ lanHost }: OutputPageClientProps) {
         const targetX = getTarget({
           device: "phone",
           type: "xy",
+          id: lastMessage.id,
           axis: "x",
         });
         const targetY = getTarget({
           device: "phone",
           type: "xy",
+          id: lastMessage.id,
           axis: "y",
         });
         if (targetX) {

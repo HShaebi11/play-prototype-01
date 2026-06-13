@@ -9,6 +9,11 @@ import {
 } from "@/lib/constants";
 
 type XYPadProps = {
+  label?: string;
+  xLabel?: string;
+  yLabel?: string;
+  defaultX?: number;
+  defaultY?: number;
   onChange: (x: number, y: number) => void;
 };
 
@@ -29,10 +34,17 @@ function positionToNormalised(
   return { x, y };
 }
 
-export function XYPad({ onChange }: XYPadProps) {
+export function XYPad({
+  label,
+  xLabel,
+  yLabel,
+  defaultX = XY_PAD_DEFAULT,
+  defaultY = XY_PAD_DEFAULT,
+  onChange,
+}: XYPadProps) {
   const padRef = useRef<HTMLDivElement>(null);
   const draggingRef = useRef(false);
-  const [position, setPosition] = useState({ x: XY_PAD_DEFAULT, y: XY_PAD_DEFAULT });
+  const [position, setPosition] = useState({ x: defaultX, y: defaultY });
 
   const updateFromPointer = useCallback(
     (clientX: number, clientY: number) => {
@@ -88,12 +100,17 @@ export function XYPad({ onChange }: XYPadProps) {
         paddingRight: XY_PAD_INSET_PX,
       }}
     >
+      {label ? (
+        <p className="text-center text-[10px] uppercase tracking-wide text-white/50">
+          {label}
+        </p>
+      ) : null}
       <div
         ref={padRef}
         className="relative aspect-square w-full touch-none select-none border border-white/10 bg-[#0a0a0a]"
         onPointerDown={handlePointerDown}
         role="group"
-        aria-label="XY pad"
+        aria-label={label ?? "XY pad"}
       >
         <div
           className="pointer-events-none absolute rounded-full"
@@ -106,7 +123,9 @@ export function XYPad({ onChange }: XYPadProps) {
           }}
         />
       </div>
-      <p className="text-[10px] text-white/50">x: xy_x  y: xy_y</p>
+      <p className="text-[10px] text-white/50">
+        x: {xLabel ?? "—"}  y: {yLabel ?? "—"}
+      </p>
     </div>
   );
 }

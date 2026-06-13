@@ -6,7 +6,8 @@ export type InputSource =
   | { device: "gamepad"; type: "axis"; index: number }
   | { device: "gamepad"; type: "button"; index: number }
   | { device: "phone"; type: "dial"; id: string }
-  | { device: "phone"; type: "xy"; axis: "x" | "y" };
+  | { device: "phone"; type: "slider"; id: string }
+  | { device: "phone"; type: "xy"; id: string; axis: "x" | "y" };
 
 export type InputMapping = {
   source: InputSource;
@@ -23,12 +24,11 @@ export type MappingStore = {
 };
 
 export function sourceKey(source: InputSource): string {
-  if (source.device === "phone" && source.type === "dial") {
-    return `phone:dial:${source.id}`;
-  }
-
-  if (source.device === "phone" && source.type === "xy") {
-    return `phone:xy:${source.axis}`;
+  if (source.device === "phone") {
+    if (source.type === "xy") {
+      return `phone:xy:${source.id}:${source.axis}`;
+    }
+    return `phone:${source.type}:${source.id}`;
   }
 
   return `${source.device}:${source.type}:${source.index}`;
@@ -96,12 +96,12 @@ export const DEFAULT_MAPPINGS: InputMapping[] = [
     label: "Density dial",
   },
   {
-    source: { device: "phone", type: "xy", axis: "x" },
+    source: { device: "phone", type: "xy", id: "xy_main", axis: "x" },
     targetVariableId: "hue",
     label: "XY pad X",
   },
   {
-    source: { device: "phone", type: "xy", axis: "y" },
+    source: { device: "phone", type: "xy", id: "xy_main", axis: "y" },
     targetVariableId: "trail",
     label: "XY pad Y",
   },

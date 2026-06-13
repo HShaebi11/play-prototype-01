@@ -9,6 +9,10 @@ import {
 } from "@/lib/constants";
 import { useVariableStore } from "@/hooks/useVariableStore";
 import {
+  controlToInputSources,
+  useControllerConfigStore,
+} from "@/lib/controllerConfig";
+import {
   sourceKey,
   useMappingStore,
   type InputSource,
@@ -71,29 +75,6 @@ const GAMEPAD_ROWS: GamepadInputRow[] = [
   },
 ];
 
-const PHONE_ROWS: Array<{ label: string; source: InputSource }> = [
-  {
-    label: "Dial: speed",
-    source: { device: "phone", type: "dial", id: "speed" },
-  },
-  {
-    label: "Dial: size",
-    source: { device: "phone", type: "dial", id: "size" },
-  },
-  {
-    label: "Dial: density",
-    source: { device: "phone", type: "dial", id: "density" },
-  },
-  {
-    label: "XY pad X axis",
-    source: { device: "phone", type: "xy", axis: "x" },
-  },
-  {
-    label: "XY pad Y axis",
-    source: { device: "phone", type: "xy", axis: "y" },
-  },
-];
-
 function findActiveGamepad(): Gamepad | null {
   const gamepads = navigator.getGamepads();
   for (let index = 0; index < gamepads.length; index += 1) {
@@ -132,6 +113,7 @@ function readGamepadValue(row: GamepadInputRow): number {
 
 function MappingRow({
   label,
+  description,
   source,
   liveValue,
   variableIds,
@@ -139,6 +121,7 @@ function MappingRow({
   onSelect,
 }: {
   label: string;
+  description?: string;
   source: InputSource;
   liveValue?: number;
   variableIds: string[];
@@ -146,44 +129,62 @@ function MappingRow({
   onSelect: (variableId: string | null) => void;
 }) {
   return (
-    <div className="flex items-center gap-1.5 py-1">
-      <span className="w-24 shrink-0 truncate text-[9px] text-white/70">
-        {label}
-      </span>
-      {liveValue !== undefined ? (
-        <div className="h-1.5 w-10 shrink-0 overflow-hidden rounded bg-white/10">
-          <div
-            className="h-full transition-all duration-75"
-            style={{
-              width: `${Math.round(liveValue * 100)}%`,
-              backgroundColor: ACCENT,
-            }}
-          />
-        </div>
+    <div className="py-1">
+      <div className="flex items-center gap-1.5">
+        <span className="w-24 shrink-0 truncate font-mono text-[9px] text-white/80">
+          {label}
+        </span>
+        {liveValue !== undefined ? (
+          <div className="h-1.5 w-10 shrink-0 overflow-hidden rounded bg-white/10">
+            <div
+              className="h-full transition-all duration-75"
+              style={{
+                width: `${Math.round(liveValue * 100)}%`,
+                backgroundColor: ACCENT,
+              }}
+            />
+          </div>
+        ) : null}
+        <span className="text-white/30">→</span>
+        <select
+          className="min-w-0 flex-1 rounded border bg-black/40 px-1 py-0.5 text-[9px] text-white outline-none"
+          style={{ borderColor: "rgba(255,255,255,0.15)" }}
+          value={targetId ?? ""}
+          onChange={(event) => {
+            const value = event.target.value;
+            onSelect(value || null);
+          }}
+        >
+          <option value="">-- none --</option>
+          {variableIds.map((id) => (
+            <option key={id} value={id}>
+              {id}
+            </option>
+          ))}
+        </select>
+      </div>
+      {description ? (
+        <p className="mt-0.5 pl-0 text-[8px] text-white/35">{description}</p>
       ) : null}
-      <span className="text-white/30">→</span>
-      <select
-        className="min-w-0 flex-1 rounded border bg-black/40 px-1 py-0.5 text-[9px] text-white outline-none"
-        style={{ borderColor: "rgba(255,255,255,0.15)" }}
-        value={targetId ?? ""}
-        onChange={(event) => {
-          const value = event.target.value;
-          onSelect(value || null);
-        }}
-      >
-        <option value="">-- none --</option>
-        {variableIds.map((id) => (
-          <option key={id} value={id}>
-            {id}
-          </option>
-        ))}
-      </select>
     </div>
   );
 }
 
+function phoneSourceLabel(source: InputSource): string {
+  if (source.device !== "phone") {
+    return sourceKey(source);
+  }
+
+  if (source.type === "xy") {
+    return `${source.id} (${source.axis})`;
+  }
+
+  return source.id;
+}
+
 export function InputsTab() {
   const variablesRecord = useVariableStore((state) => state.variables);
+  const controllerConfig = useControllerConfigStore((state) => state.config);
   const variableIds = useMemo(
     () => Object.values(variablesRecord).map((variable) => variable.id),
     [variablesRecord],
@@ -192,6 +193,29 @@ export function InputsTab() {
   const setMapping = useMappingStore((state) => state.setMapping);
   const removeMapping = useMappingStore((state) => state.removeMapping);
   const reset = useMappingStore((state) => state.reset);
+
+  const phoneRows = useMemo(() => {
+    const rows: Array<{
+      label: string;
+      description: string;
+      source: InputSource;
+    }> = [];
+
+    for (const tab of controllerConfig.tabs) {
+      for (const control of tab.controls) {
+        const sources = controlToInputSources(control);
+        for (const source of sources) {
+          rows.push({
+            label: phoneSourceLabel(source),
+            description: control.description,
+            source,
+          });
+        }
+      }
+    }
+
+    return rows;
+  }, [controllerConfig]);
 
   const [liveValues, setLiveValues] = useState<Record<string, number>>({});
 
@@ -259,21 +283,29 @@ export function InputsTab() {
           <span className="mb-2 block text-[9px] tracking-wider text-white/50">
             PHONE
           </span>
-          {PHONE_ROWS.map((row) => (
-            <MappingRow
-              key={sourceKey(row.source)}
-              label={row.label}
-              source={row.source}
-              variableIds={variableIds}
-              targetId={getTargetForSource(row.source)}
-              onSelect={(variableId) => handleSelect(row.source, variableId)}
-            />
-          ))}
+          {phoneRows.length === 0 ? (
+            <p className="text-[9px] text-white/30">
+              Add controls in the CONTROLLER tab.
+            </p>
+          ) : (
+            phoneRows.map((row) => (
+              <MappingRow
+                key={sourceKey(row.source)}
+                label={row.label}
+                description={row.description}
+                source={row.source}
+                variableIds={variableIds}
+                targetId={getTargetForSource(row.source)}
+                onSelect={(variableId) => handleSelect(row.source, variableId)}
+              />
+            ))
+          )}
         </div>
       </div>
 
       <p className="text-[8px] text-white/30">
-        Mappings are saved automatically and persist between sessions.
+        Phone controls are configured in the CONTROLLER tab. Mappings persist
+        between sessions.
       </p>
     </div>
   );

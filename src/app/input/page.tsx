@@ -1,11 +1,12 @@
 "use client";
 
-import { Suspense, useCallback, useState } from "react";
+import { Suspense, useCallback, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { ConnectionScreen } from "@/components/input/ConnectionScreen";
 import { ControllerSurface } from "@/components/input/ControllerSurface";
 import type { PlayMode } from "@/components/input/ModeSwitcher";
 import { usePeer } from "@/hooks/usePeer";
+import { DEFAULT_CONTROLLER_CONFIG } from "@/lib/controllerConfig";
 import { ACCENT, BG_COLOR } from "@/lib/constants";
 import { normalizeRoomCode, readRoomCodeFromSearchParams } from "@/lib/joinUrl";
 
@@ -14,7 +15,16 @@ type JoinedControllerProps = {
 };
 
 function JoinedController({ peerId }: JoinedControllerProps) {
-  const { isConnected, send, error } = usePeer({ mode: "join", peerId });
+  const { isConnected, send, error, controllerConfig, variableDefaults } =
+    usePeer({
+      mode: "join",
+      peerId,
+    });
+
+  const config = useMemo(
+    () => controllerConfig ?? DEFAULT_CONTROLLER_CONFIG,
+    [controllerConfig],
+  );
 
   const handleDialChange = useCallback(
     (id: string, value: number) => {
@@ -23,9 +33,16 @@ function JoinedController({ peerId }: JoinedControllerProps) {
     [send],
   );
 
+  const handleSliderChange = useCallback(
+    (id: string, value: number) => {
+      send({ type: "slider", id, value });
+    },
+    [send],
+  );
+
   const handleXYChange = useCallback(
-    (x: number, y: number) => {
-      send({ type: "xy", x, y });
+    (id: string, x: number, y: number) => {
+      send({ type: "xy", id, x, y });
     },
     [send],
   );
@@ -70,7 +87,10 @@ function JoinedController({ peerId }: JoinedControllerProps) {
 
   return (
     <ControllerSurface
+      config={config}
+      variableDefaults={variableDefaults}
       onDialChange={handleDialChange}
+      onSliderChange={handleSliderChange}
       onXYChange={handleXYChange}
       onModeChange={handleModeChange}
     />

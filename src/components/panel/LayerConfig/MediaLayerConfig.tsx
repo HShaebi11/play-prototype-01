@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import type { MediaFit, MediaLayerConfig } from "@/lib/layers";
 import { useLayerStore } from "@/hooks/useLayerStore";
+import { VariableSelect } from "@/components/panel/VariableSelect";
 
 type MediaLayerConfigPanelProps = {
   layerId: string;
@@ -40,12 +41,12 @@ export function MediaLayerConfigPanel({ layerId }: MediaLayerConfigPanelProps) {
 
   const updateBinding = (
     key: keyof MediaLayerConfig["bindings"],
-    value: string,
+    variableId: string | undefined,
   ) => {
     updateLayerConfig(layerId, {
       bindings: {
         ...config.bindings,
-        [key]: value.trim() || undefined,
+        [key]: variableId,
       },
     });
   };
@@ -112,19 +113,13 @@ export function MediaLayerConfigPanel({ layerId }: MediaLayerConfigPanelProps) {
         </span>
         <div className="flex flex-col gap-1">
           {BINDING_FIELDS.map(({ key, label }) => (
-            <label
+            <VariableSelect
               key={key}
-              className="flex items-center gap-1 text-[9px] text-white/60"
-            >
-              <span className="w-16 shrink-0">{label}</span>
-              <input
-                className="min-w-0 flex-1 rounded border bg-black/30 px-1 py-0.5 font-mono text-[9px] text-white outline-none"
-                style={{ borderColor: "rgba(255,255,255,0.15)" }}
-                value={config.bindings[key] ?? ""}
-                placeholder="—"
-                onChange={(event) => updateBinding(key, event.target.value)}
-              />
-            </label>
+              label={label}
+              labelWidth="w-16"
+              value={config.bindings[key]}
+              onChange={(variableId) => updateBinding(key, variableId)}
+            />
           ))}
         </div>
       </div>

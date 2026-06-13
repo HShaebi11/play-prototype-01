@@ -9,6 +9,7 @@ const LAYER_TYPE_OPTIONS: Array<{ type: LayerType; label: string }> = [
   { type: "threejs", label: "Three.js Layer" },
   { type: "p5", label: "p5.js Layer" },
   { type: "media", label: "Media Layer" },
+  { type: "effects", label: "Effects Layer" },
 ];
 
 export function LayersTab() {
@@ -19,6 +20,7 @@ export function LayersTab() {
   );
   const addLayer = useLayerStore((state) => state.addLayer);
   const reorderLayers = useLayerStore((state) => state.reorderLayers);
+  const hasEffectsLayer = layers.some((layer) => layer.type === "effects");
 
   const [showAddPicker, setShowAddPicker] = useState(false);
   const [draggingId, setDraggingId] = useState<string | null>(null);
@@ -100,7 +102,9 @@ export function LayersTab() {
             className="absolute bottom-full left-0 right-0 mb-1 rounded border bg-[#0a0a0a] p-1 shadow-lg"
             style={{ borderColor: "rgba(255,255,255,0.15)" }}
           >
-            {LAYER_TYPE_OPTIONS.map(({ type, label }) => (
+            {LAYER_TYPE_OPTIONS.filter(
+              ({ type }) => type !== "effects" || !hasEffectsLayer,
+            ).map(({ type, label }) => (
               <button
                 key={type}
                 type="button"

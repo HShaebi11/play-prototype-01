@@ -7,11 +7,11 @@ import Peer, {
   PeerErrorType,
   SerializationType,
 } from "peerjs";
+import type { ControllerConfig } from "@/lib/controllerConfig";
 import { normalizeRoomCode } from "@/lib/joinUrl";
-import type { PlayMessage } from "@/lib/types";
+import type { ConfigMessage, PeerMessage, PlayMessage } from "@/lib/types";
 
 const PEER_ID_LENGTH = 4;
-/** Uppercase only — easier to type on phone and matches QR / URL normalisation. */
 const PEER_ID_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
 const CONNECT_OPTIONS = {
@@ -29,8 +29,10 @@ export type UsePeerArgs = {
 export type UsePeerResult = {
   localPeerId: string;
   isConnected: boolean;
-  send: (msg: PlayMessage) => void;
+  send: (msg: PeerMessage) => void;
   lastMessage: PlayMessage | null;
+  controllerConfig: ControllerConfig | null;
+  variableDefaults: Record<string, number>;
   error: string | null;
 };
 
@@ -54,7 +56,11 @@ function isPlayMessage(data: unknown): data is PlayMessage {
     case "slider":
       return typeof msg.id === "string" && typeof msg.value === "number";
     case "xy":
-      return typeof msg.x === "number" && typeof msg.y === "number";
+      return (
+        typeof msg.id === "string" &&
+        typeof msg.x === "number" &&
+        typeof msg.y === "number"
+      );
     case "mode":
       return (
         msg.value === "geo" ||
@@ -66,17 +72,44 @@ function isPlayMessage(data: unknown): data is PlayMessage {
   }
 }
 
-function parsePlayMessage(data: unknown): PlayMessage | null {
+function isConfigMessage(data: unknown): data is ConfigMessage {
+  if (!data || typeof data !== "object") {
+    return false;
+  }
+
+  const msg = data as Record<string, unknown>;
+  if (msg.type !== "config") {
+    return false;
+  }
+
+  const config = msg.config as ControllerConfig | undefined;
+  const defaults = msg.variableDefaults;
+  return Boolean(
+    config &&
+      Array.isArray(config.tabs) &&
+      (defaults === undefined ||
+        (typeof defaults === "object" && defaults !== null)),
+  );
+}
+
+function parsePeerMessage(data: unknown): PeerMessage | null {
   if (typeof data === "string") {
     try {
       const parsed: unknown = JSON.parse(data);
-      return isPlayMessage(parsed) ? parsed : null;
+      if (isPlayMessage(parsed) || isConfigMessage(parsed)) {
+        return parsed;
+      }
+      return null;
     } catch {
       return null;
     }
   }
 
-  return isPlayMessage(data) ? data : null;
+  if (isPlayMessage(data) || isConfigMessage(data)) {
+    return data;
+  }
+
+  return null;
 }
 
 function describePeerError(error: PeerError<string>): string {
@@ -100,11 +133,16 @@ export function usePeer({ mode, peerId }: UsePeerArgs): UsePeerResult {
   const [localPeerId, setLocalPeerId] = useState("");
   const [isConnected, setIsConnected] = useState(false);
   const [lastMessage, setLastMessage] = useState<PlayMessage | null>(null);
+  const [controllerConfig, setControllerConfig] =
+    useState<ControllerConfig | null>(null);
+  const [variableDefaults, setVariableDefaults] = useState<
+    Record<string, number>
+  >({});
   const [error, setError] = useState<string | null>(null);
 
   const connectionRef = useRef<DataConnection | null>(null);
 
-  const send = useCallback((msg: PlayMessage) => {
+  const send = useCallback((msg: PeerMessage) => {
     const connection = connectionRef.current;
 
     if (!connection?.open) {
@@ -159,12 +197,19 @@ export function usePeer({ mode, peerId }: UsePeerArgs): UsePeerResult {
           return;
         }
 
-        const message = parsePlayMessage(data);
-        if (message) {
-          setLastMessage(message);
-        } else {
-          console.warn("[usePeer] Received invalid PlayMessage payload", data);
+        const message = parsePeerMessage(data);
+        if (!message) {
+          console.warn("[usePeer] Received invalid PeerMessage payload", data);
+          return;
         }
+
+        if (message.type === "config") {
+          setControllerConfig(message.config);
+          setVariableDefaults(message.variableDefaults ?? {});
+          return;
+        }
+
+        setLastMessage(message);
       });
 
       connection.on("close", () => {
@@ -261,6 +306,8 @@ export function usePeer({ mode, peerId }: UsePeerArgs): UsePeerResult {
     setLocalPeerId("");
     setIsConnected(false);
     setLastMessage(null);
+    setControllerConfig(null);
+    setVariableDefaults({});
     setError(null);
     connectionRef.current = null;
 
@@ -288,6 +335,8 @@ export function usePeer({ mode, peerId }: UsePeerArgs): UsePeerResult {
     isConnected,
     send,
     lastMessage,
+    controllerConfig,
+    variableDefaults,
     error,
   };
 }
