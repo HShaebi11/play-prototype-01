@@ -10,6 +10,7 @@ export type PlayMessage =
 export type ConfigMessage = {
   type: "config";
   config: ControllerConfig;
+  variableDefaults: Record<string, number>;
 };
 
 export type PeerMessage = PlayMessage | ConfigMessage;

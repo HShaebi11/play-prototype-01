@@ -15,10 +15,11 @@ type JoinedControllerProps = {
 };
 
 function JoinedController({ peerId }: JoinedControllerProps) {
-  const { isConnected, send, error, controllerConfig } = usePeer({
-    mode: "join",
-    peerId,
-  });
+  const { isConnected, send, error, controllerConfig, variableDefaults } =
+    usePeer({
+      mode: "join",
+      peerId,
+    });
 
   const config = useMemo(
     () => controllerConfig ?? DEFAULT_CONTROLLER_CONFIG,
@@ -87,6 +88,7 @@ function JoinedController({ peerId }: JoinedControllerProps) {
   return (
     <ControllerSurface
       config={config}
+      variableDefaults={variableDefaults}
       onDialChange={handleDialChange}
       onSliderChange={handleSliderChange}
       onXYChange={handleXYChange}

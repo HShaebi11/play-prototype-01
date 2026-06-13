@@ -235,23 +235,23 @@ export function EffectPipeline({
     material.uniforms.uTime.value = timeRef.current;
     material.uniforms.uIntensity.value = readScaledBinding(
       bindings.intensity,
-      "density",
       values.intensity ?? 1,
+      0.5,
     );
     material.uniforms.uSpeed.value = readScaledBinding(
       bindings.speed,
-      "speed",
       values.speed ?? 1,
+      0.5,
     );
     material.uniforms.uHue.value = readScaledBinding(
       bindings.hue,
-      "hue",
       values.hue ?? 1,
+      0.5,
     );
     material.uniforms.uMix.value = readScaledBinding(
       bindings.mix,
-      "trail",
       values.mix ?? 1,
+      1,
     );
     material.uniforms.uOpacity.value = opacity;
     material.uniforms.uScene.value = sceneTexture;

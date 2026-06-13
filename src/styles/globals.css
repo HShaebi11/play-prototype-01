@@ -30,3 +30,18 @@ body {
   opacity: 0.3;
   animation: play-dot-pulse 600ms ease-in-out infinite;
 }
+
+.controller-portrait-hint {
+  display: none;
+}
+
+@media (orientation: portrait) {
+  .controller-portrait-hint {
+    display: block;
+  }
+}
+
+html,
+body {
+  overscroll-behavior: none;
+}

@@ -7,6 +7,7 @@ import {
   PRESET_PARAM_DEFS,
 } from "@/lib/effectPresetParams";
 import { useLayerStore } from "@/hooks/useLayerStore";
+import { VariableSelect } from "@/components/panel/VariableSelect";
 import { ACCENT } from "@/lib/constants";
 
 type EffectsLayerConfigPanelProps = {
@@ -25,44 +26,17 @@ const PRESET_OPTIONS: Array<{ value: EffectPreset; label: string }> = [
 const BINDING_FIELDS: Array<{
   key: keyof EffectsLayerConfig["bindings"];
   label: string;
-  defaultVariable: string;
 }> = [
-  { key: "intensity", label: "Intensity", defaultVariable: "density" },
-  { key: "speed", label: "Speed", defaultVariable: "speed" },
-  { key: "hue", label: "Hue", defaultVariable: "hue" },
-  { key: "mix", label: "Mix (wet/dry)", defaultVariable: "trail" },
+  { key: "intensity", label: "Intensity" },
+  { key: "speed", label: "Speed" },
+  { key: "hue", label: "Hue" },
+  { key: "mix", label: "Mix (wet/dry)" },
 ];
 
 const DEFAULT_CUSTOM_SHADER = `
 color.rgb = hueRotate(color.rgb, uHue);
 color.rgb *= 0.9 + uIntensity * 0.2;
 `.trim();
-
-function BindingInput({
-  label,
-  value,
-  onChange,
-}: {
-  label: string;
-  value?: string;
-  onChange: (value: string | undefined) => void;
-}) {
-  return (
-    <label className="flex items-center gap-1 text-[9px] text-white/60">
-      <span className="w-24 shrink-0">{label}</span>
-      <input
-        className="min-w-0 flex-1 rounded border bg-black/30 px-1 py-0.5 font-mono text-[9px] text-white outline-none"
-        style={{ borderColor: "rgba(255,255,255,0.15)" }}
-        value={value ?? ""}
-        placeholder="—"
-        onChange={(event) => {
-          const next = event.target.value.trim();
-          onChange(next || undefined);
-        }}
-      />
-    </label>
-  );
-}
 
 function ValueScaleSlider({
   label,
@@ -146,12 +120,11 @@ export function EffectsLayerConfigPanel({
   const updateBinding = (
     key: keyof EffectsLayerConfig["bindings"],
     variableId: string | undefined,
-    defaultVariable: string,
   ) => {
     updateLayerConfig(layerId, {
       bindings: {
         ...config.bindings,
-        [key]: variableId ?? defaultVariable,
+        [key]: variableId,
       },
     });
   };
@@ -250,14 +223,12 @@ export function EffectsLayerConfigPanel({
           BINDINGS
         </span>
         <div className="flex flex-col gap-1">
-          {BINDING_FIELDS.map(({ key, label, defaultVariable }) => (
-            <BindingInput
+          {BINDING_FIELDS.map(({ key, label }) => (
+            <VariableSelect
               key={key}
               label={label}
-              value={config.bindings[key] ?? defaultVariable}
-              onChange={(variableId) =>
-                updateBinding(key, variableId, defaultVariable)
-              }
+              value={config.bindings[key]}
+              onChange={(variableId) => updateBinding(key, variableId)}
             />
           ))}
         </div>

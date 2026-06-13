@@ -23,7 +23,7 @@ export type VariableStore = {
   add: (definition: VariableDefinition) => void;
   update: (
     id: string,
-    patch: Partial<Pick<Variable, "label" | "description">>,
+    patch: Partial<Pick<Variable, "label" | "description" | "value">>,
   ) => void;
   remove: (id: string) => void;
   ensure: (definition: VariableDefinition) => void;

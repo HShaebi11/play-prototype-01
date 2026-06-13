@@ -16,6 +16,7 @@ import { useLayerStoreApi } from "@/hooks/useLayerStore";
 import { usePeer } from "@/hooks/usePeer";
 import {
   DEFAULT_VARIABLES,
+  useVariableStore,
   useVariableStoreApi,
 } from "@/hooks/useVariableStore";
 import {
@@ -85,6 +86,7 @@ export function OutputPageClient({ lanHost }: OutputPageClientProps) {
   });
 
   const controllerConfig = useControllerConfigStore((state) => state.config);
+  const variables = useVariableStore((state) => state.variables);
 
   const gamepadStatus = useGamepad({
     onModeChange: setMode,
@@ -116,8 +118,12 @@ export function OutputPageClient({ lanHost }: OutputPageClientProps) {
       return;
     }
 
-    send({ type: "config", config: controllerConfig });
-  }, [isConnected, controllerConfig, send]);
+    const variableDefaults = Object.fromEntries(
+      Object.entries(variables).map(([id, variable]) => [id, variable.value]),
+    );
+
+    send({ type: "config", config: controllerConfig, variableDefaults });
+  }, [isConnected, controllerConfig, variables, send]);
 
   useEffect(() => {
     if (!lastMessage) {

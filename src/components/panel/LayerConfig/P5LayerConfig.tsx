@@ -4,6 +4,7 @@ import { useRef } from "react";
 import type { P5LayerConfig, P5SketchType } from "@/lib/layers";
 import { DEFAULT_SHADER_SOURCE } from "@/lib/layers";
 import { useLayerStore } from "@/hooks/useLayerStore";
+import { VariableSelect } from "@/components/panel/VariableSelect";
 import { ACCENT } from "@/lib/constants";
 
 type P5LayerConfigPanelProps = {
@@ -39,27 +40,20 @@ export function P5LayerConfigPanel({ layerId }: P5LayerConfigPanelProps) {
   const config = layer.config as P5LayerConfig;
   const bindingKeys = BINDING_KEYS[config.sketch];
 
-  const updateBinding = (key: string, variableId: string) => {
-    updateLayerConfig(layerId, {
-      bindings: {
-        ...config.bindings,
-        [key]: variableId.trim() || key,
-      },
-    });
+  const updateBinding = (key: string, variableId: string | undefined) => {
+    const nextBindings = { ...config.bindings };
+    if (variableId) {
+      nextBindings[key] = variableId;
+    } else {
+      delete nextBindings[key];
+    }
+    updateLayerConfig(layerId, { bindings: nextBindings });
   };
 
   const handleSketchChange = (sketch: P5SketchType) => {
-    const defaults = BINDING_KEYS[sketch].reduce<Record<string, string>>(
-      (accumulator, key) => {
-        accumulator[key] = config.bindings[key] ?? key;
-        return accumulator;
-      },
-      {},
-    );
-
     updateLayerConfig(layerId, {
       sketch,
-      bindings: defaults,
+      bindings: {},
       shaderSource:
         sketch === "shader"
           ? config.shaderSource ?? DEFAULT_SHADER_SOURCE
@@ -103,18 +97,13 @@ export function P5LayerConfigPanel({ layerId }: P5LayerConfigPanelProps) {
         </span>
         <div className="flex flex-col gap-1">
           {bindingKeys.map((key) => (
-            <label
+            <VariableSelect
               key={key}
-              className="flex items-center gap-1 text-[9px] text-white/60"
-            >
-              <span className="w-16 shrink-0">{key}</span>
-              <input
-                className="min-w-0 flex-1 rounded border bg-black/30 px-1 py-0.5 font-mono text-[9px] text-white outline-none"
-                style={{ borderColor: "rgba(255,255,255,0.15)" }}
-                value={config.bindings[key] ?? key}
-                onChange={(event) => updateBinding(key, event.target.value)}
-              />
-            </label>
+              label={key}
+              labelWidth="w-16"
+              value={config.bindings[key]}
+              onChange={(variableId) => updateBinding(key, variableId)}
+            />
           ))}
         </div>
       </div>

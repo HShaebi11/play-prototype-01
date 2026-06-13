@@ -1,28 +1,26 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import {
-  DIAL_DEFAULT_DENSITY,
-  DIAL_DEFAULT_SIZE,
-  DIAL_DEFAULT_SPEED,
-  XY_PAD_DEFAULT,
-} from "@/lib/constants";
 import { useMappingStore, type InputSource } from "@/lib/mappings";
 import { createClientStorage } from "@/lib/persist-storage";
-import { useVariableStore } from "@/lib/variables";
 
 export type ControllerControlType = "dial" | "slider" | "xy" | "mode";
+
+export type ControlLayout = {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+};
 
 export type ControllerControl = {
   id: string;
   type: ControllerControlType;
   label: string;
   description: string;
+  layout: ControlLayout;
   targetVariableId?: string;
   targetVariableXId?: string;
   targetVariableYId?: string;
-  defaultValue?: number;
-  defaultX?: number;
-  defaultY?: number;
 };
 
 export type ControllerTab = {
@@ -46,6 +44,11 @@ export type ControllerConfigStore = {
     controlId: string,
     patch: Partial<ControllerControl>,
   ) => void;
+  updateControlLayout: (
+    tabId: string,
+    controlId: string,
+    layout: Partial<ControlLayout>,
+  ) => void;
   removeControl: (tabId: string, controlId: string) => void;
   reset: () => void;
 };
@@ -53,6 +56,48 @@ export type ControllerConfigStore = {
 function createId(prefix: string): string {
   return `${prefix}-${Math.random().toString(36).slice(2, 8)}`;
 }
+
+function clamp01(value: number): number {
+  return Math.max(0, Math.min(1, value));
+}
+
+function snapToGrid(value: number, grid = 0.05): number {
+  return Math.round(value / grid) * grid;
+}
+
+export function defaultLayoutForType(
+  type: ControllerControlType,
+  index: number,
+): ControlLayout {
+  switch (type) {
+    case "dial":
+      return {
+        x: snapToGrid(0.02 + index * 0.14),
+        y: 0.08,
+        w: 0.12,
+        h: 0.55,
+      };
+    case "slider":
+      return {
+        x: snapToGrid(0.02 + index * 0.22),
+        y: 0.15,
+        w: 0.2,
+        h: 0.12,
+      };
+    case "xy":
+      return { x: 0.38, y: 0.08, w: 0.38, h: 0.72 };
+    case "mode":
+      return { x: 0.02, y: 0.78, w: 0.96, h: 0.18 };
+  }
+}
+
+const MAIN_TAB_LAYOUTS: ControlLayout[] = [
+  { x: 0.02, y: 0.1, w: 0.12, h: 0.55 },
+  { x: 0.16, y: 0.1, w: 0.12, h: 0.55 },
+  { x: 0.3, y: 0.1, w: 0.12, h: 0.55 },
+  { x: 0.46, y: 0.08, w: 0.38, h: 0.72 },
+  { x: 0.02, y: 0.78, w: 0.96, h: 0.18 },
+];
 
 export const DEFAULT_CONTROLLER_CONFIG: ControllerConfig = {
   tabs: [
@@ -66,7 +111,7 @@ export const DEFAULT_CONTROLLER_CONFIG: ControllerConfig = {
           label: "speed",
           description: "Animation speed — drives layer motion rate",
           targetVariableId: "speed",
-          defaultValue: DIAL_DEFAULT_SPEED,
+          layout: MAIN_TAB_LAYOUTS[0],
         },
         {
           id: "size",
@@ -74,7 +119,7 @@ export const DEFAULT_CONTROLLER_CONFIG: ControllerConfig = {
           label: "size",
           description: "Object scale — Three.js mesh size",
           targetVariableId: "size",
-          defaultValue: DIAL_DEFAULT_SIZE,
+          layout: MAIN_TAB_LAYOUTS[1],
         },
         {
           id: "density",
@@ -82,7 +127,7 @@ export const DEFAULT_CONTROLLER_CONFIG: ControllerConfig = {
           label: "density",
           description: "Particle density — p5 noise field count",
           targetVariableId: "density",
-          defaultValue: DIAL_DEFAULT_DENSITY,
+          layout: MAIN_TAB_LAYOUTS[2],
         },
         {
           id: "xy_main",
@@ -91,21 +136,24 @@ export const DEFAULT_CONTROLLER_CONFIG: ControllerConfig = {
           description: "Hue (X axis) and trail mix (Y axis)",
           targetVariableXId: "hue",
           targetVariableYId: "trail",
-          defaultX: XY_PAD_DEFAULT,
-          defaultY: 0.2,
+          layout: MAIN_TAB_LAYOUTS[3],
         },
         {
           id: "mode",
           type: "mode",
           label: "Mode",
           description: "Visual mode — geo, audio, or colour",
+          layout: MAIN_TAB_LAYOUTS[4],
         },
       ],
     },
   ],
 };
 
-function defaultControlForType(type: ControllerControlType): ControllerControl {
+function defaultControlForType(
+  type: ControllerControlType,
+  index: number,
+): ControllerControl {
   const id = createId(type);
 
   switch (type) {
@@ -115,8 +163,7 @@ function defaultControlForType(type: ControllerControlType): ControllerControl {
         type,
         label: "dial",
         description: "Describe what this dial controls",
-        targetVariableId: id,
-        defaultValue: 0.5,
+        layout: defaultLayoutForType("dial", index),
       };
     case "slider":
       return {
@@ -124,8 +171,7 @@ function defaultControlForType(type: ControllerControlType): ControllerControl {
         type,
         label: "slider",
         description: "Describe what this slider controls",
-        targetVariableId: id,
-        defaultValue: 0.5,
+        layout: defaultLayoutForType("slider", index),
       };
     case "xy":
       return {
@@ -133,10 +179,7 @@ function defaultControlForType(type: ControllerControlType): ControllerControl {
         type,
         label: "XY",
         description: "Describe what the X and Y axes control",
-        targetVariableXId: "xy_x",
-        targetVariableYId: "xy_y",
-        defaultX: XY_PAD_DEFAULT,
-        defaultY: XY_PAD_DEFAULT,
+        layout: defaultLayoutForType("xy", index),
       };
     case "mode":
       return {
@@ -144,8 +187,34 @@ function defaultControlForType(type: ControllerControlType): ControllerControl {
         type,
         label: "Mode",
         description: "Switches visual mode (geo / audio / colour)",
+        layout: defaultLayoutForType("mode", index),
       };
   }
+}
+
+export function migrateControlLayout(
+  control: ControllerControl,
+  index: number,
+): ControllerControl {
+  if (control.layout) {
+    return control;
+  }
+
+  return {
+    ...control,
+    layout: defaultLayoutForType(control.type, index),
+  };
+}
+
+export function migrateConfig(config: ControllerConfig): ControllerConfig {
+  return {
+    tabs: config.tabs.map((tab) => ({
+      ...tab,
+      controls: tab.controls.map((control, index) =>
+        migrateControlLayout(control as ControllerControl, index),
+      ),
+    })),
+  };
 }
 
 export function controlToInputSources(control: ControllerControl): InputSource[] {
@@ -164,43 +233,7 @@ export function controlToInputSources(control: ControllerControl): InputSource[]
   }
 }
 
-export function syncVariablesFromConfig(config: ControllerConfig): void {
-  const { ensure } = useVariableStore.getState();
-
-  for (const tab of config.tabs) {
-    for (const control of tab.controls) {
-      if (control.targetVariableId) {
-        ensure({
-          id: control.targetVariableId,
-          label: control.label,
-          description: control.description,
-          defaultValue: control.defaultValue,
-        });
-      }
-
-      if (control.targetVariableXId) {
-        ensure({
-          id: control.targetVariableXId,
-          label: `${control.label} X`,
-          description: control.description,
-          defaultValue: control.defaultX,
-        });
-      }
-
-      if (control.targetVariableYId) {
-        ensure({
-          id: control.targetVariableYId,
-          label: `${control.label} Y`,
-          description: control.description,
-          defaultValue: control.defaultY,
-        });
-      }
-    }
-  }
-}
-
 export function syncMappingsFromConfig(config: ControllerConfig): void {
-  syncVariablesFromConfig(config);
   const { setMapping, removeMapping } = useMappingStore.getState();
 
   for (const tab of config.tabs) {
@@ -268,13 +301,15 @@ export const useControllerConfigStore = create<ControllerConfigStore>()(
       },
 
       addControl: (tabId, type) => {
-        const control = defaultControlForType(type);
         const config = {
-          tabs: get().config.tabs.map((tab) =>
-            tab.id === tabId
-              ? { ...tab, controls: [...tab.controls, control] }
-              : tab,
-          ),
+          tabs: get().config.tabs.map((tab) => {
+            if (tab.id !== tabId) {
+              return tab;
+            }
+            const index = tab.controls.length;
+            const control = defaultControlForType(type, index);
+            return { ...tab, controls: [...tab.controls, control] };
+          }),
         };
         set({ config });
         syncMappingsFromConfig(config);
@@ -295,6 +330,37 @@ export const useControllerConfigStore = create<ControllerConfigStore>()(
         };
         set({ config });
         syncMappingsFromConfig(config);
+      },
+
+      updateControlLayout: (tabId, controlId, layoutPatch) => {
+        const config = {
+          tabs: get().config.tabs.map((tab) =>
+            tab.id === tabId
+              ? {
+                  ...tab,
+                  controls: tab.controls.map((control) => {
+                    if (control.id !== controlId) {
+                      return control;
+                    }
+                    const next = {
+                      ...control.layout,
+                      ...layoutPatch,
+                    };
+                    return {
+                      ...control,
+                      layout: {
+                        x: clamp01(next.x),
+                        y: clamp01(next.y),
+                        w: clamp01(Math.max(0.05, next.w)),
+                        h: clamp01(Math.max(0.05, next.h)),
+                      },
+                    };
+                  }),
+                }
+              : tab,
+          ),
+        };
+        set({ config });
       },
 
       removeControl: (tabId, controlId) => {
@@ -322,9 +388,21 @@ export const useControllerConfigStore = create<ControllerConfigStore>()(
     {
       name: "play-controller-config",
       storage: createClientStorage(),
+      merge: (persisted, current) => {
+        const merged = {
+          ...current,
+          ...(persisted as Partial<ControllerConfigStore>),
+        };
+        if (merged.config) {
+          merged.config = migrateConfig(merged.config);
+        }
+        return merged;
+      },
       onRehydrateStorage: () => (state) => {
         if (state?.config) {
-          syncMappingsFromConfig(state.config);
+          const migrated = migrateConfig(state.config);
+          state.config = migrated;
+          syncMappingsFromConfig(migrated);
         }
       },
     },

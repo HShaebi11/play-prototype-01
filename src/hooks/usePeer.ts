@@ -32,6 +32,7 @@ export type UsePeerResult = {
   send: (msg: PeerMessage) => void;
   lastMessage: PlayMessage | null;
   controllerConfig: ControllerConfig | null;
+  variableDefaults: Record<string, number>;
   error: string | null;
 };
 
@@ -82,7 +83,13 @@ function isConfigMessage(data: unknown): data is ConfigMessage {
   }
 
   const config = msg.config as ControllerConfig | undefined;
-  return Boolean(config && Array.isArray(config.tabs));
+  const defaults = msg.variableDefaults;
+  return Boolean(
+    config &&
+      Array.isArray(config.tabs) &&
+      (defaults === undefined ||
+        (typeof defaults === "object" && defaults !== null)),
+  );
 }
 
 function parsePeerMessage(data: unknown): PeerMessage | null {
@@ -128,6 +135,9 @@ export function usePeer({ mode, peerId }: UsePeerArgs): UsePeerResult {
   const [lastMessage, setLastMessage] = useState<PlayMessage | null>(null);
   const [controllerConfig, setControllerConfig] =
     useState<ControllerConfig | null>(null);
+  const [variableDefaults, setVariableDefaults] = useState<
+    Record<string, number>
+  >({});
   const [error, setError] = useState<string | null>(null);
 
   const connectionRef = useRef<DataConnection | null>(null);
@@ -195,6 +205,7 @@ export function usePeer({ mode, peerId }: UsePeerArgs): UsePeerResult {
 
         if (message.type === "config") {
           setControllerConfig(message.config);
+          setVariableDefaults(message.variableDefaults ?? {});
           return;
         }
 
@@ -296,6 +307,7 @@ export function usePeer({ mode, peerId }: UsePeerArgs): UsePeerResult {
     setIsConnected(false);
     setLastMessage(null);
     setControllerConfig(null);
+    setVariableDefaults({});
     setError(null);
     connectionRef.current = null;
 
@@ -324,6 +336,7 @@ export function usePeer({ mode, peerId }: UsePeerArgs): UsePeerResult {
     send,
     lastMessage,
     controllerConfig,
+    variableDefaults,
     error,
   };
 }

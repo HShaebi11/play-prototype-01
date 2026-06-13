@@ -16,9 +16,12 @@ export function readBinding(
 
 export function readScaledBinding(
   variableId: string | undefined,
-  fallback: string,
   scale = 1,
+  fallback = 0.5,
 ): number {
-  const value = readBinding(variableId ?? fallback);
+  if (!variableId) {
+    return clamp01(fallback * scale);
+  }
+  const value = readBinding(variableId);
   return clamp01(value * scale);
 }
